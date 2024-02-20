@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
   // State to track if the checkbox is checked
   const [showBillingAddress, setShowBillingAddress] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
   // Function to determine if the border should be green or red for confirmPassword
   const getPasswordInputClassName = () => {
@@ -303,7 +305,11 @@ export default function Register() {
                 </div>
 
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                  <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                  <button 
+                    type="button" 
+                    className="text-sm font-semibold leading-6 text-gray-900"
+                    onClick={() => navigate(-1)}
+                  >
                     Cancel
                   </button>
                   <button
