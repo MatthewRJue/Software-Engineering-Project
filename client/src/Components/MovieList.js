@@ -6,7 +6,7 @@ const movies = [
     name: 'Oppenheimer',
     genre: 'Thriller/Action',
     rating: 'R',
-    mpaarating: 'MPAA R',
+    mpaarating: 'MPAA-US R',
     imageUrl:
       'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQlbnvo6cBTWi-aLAHChxPCNfCEDDqPWEejYpDvlA3ctbAmOJfVMCmflmEktyLC5wK69EGA',
     runtime: '180 Minutes',
@@ -21,7 +21,7 @@ const movies = [
     name: 'Past Lives',
     genre: 'Romance/Drama',
     rating: 'PG-13',
-    mpaarating: 'MPAA PG-13',
+    mpaarating: 'MPAA-US PG-13',
     imageUrl:
       'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSVJSj4a-fYEBTJPV-ns5UszYf--tyTJU3nP8qkgLeJzOi8kWCYbQzYKEzEbbjWjiaJBuvW9Q',
     runtime: '96 Minutes',
