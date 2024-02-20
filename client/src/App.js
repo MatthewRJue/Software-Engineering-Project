@@ -23,9 +23,7 @@ function App() {
       <Routes>
         <Route path="/" element={
           <><Navbar />
-          <Movieinfo isOpen={isModalOpen} onClose={() => setModalOpen(false)}/>
           <MovieList />
-          <button onClick={handleClick}>Click for Modal Test</button>;
           </>
         } />
         <Route path="/login" element={<Login />} />
