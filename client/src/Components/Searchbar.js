@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 export default function Searchbar() {
     return (
       <div className="flex justify-center">
-        <div className="flex relative mt-2 rounded-md w-full max-w-xl"> {/* Adjusted to flex */}
+        <div className="flex relative mt-2 rounded-md w-full max-w-xl">
           {/* Magnifying Glass Icon */}
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
