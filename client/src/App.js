@@ -12,7 +12,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Up
 
 function App() {
 
-  const [isModalOpen, setModalOpen] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const handleClick = () => {
+    setModalOpen(true)
+  }
+
 
   return (
     <Router>
@@ -21,6 +25,7 @@ function App() {
           <><Navbar />
           <Movieinfo isOpen={isModalOpen} onClose={() => setModalOpen(false)}/>
           <MovieList />
+          <button onClick={handleClick}>Click for Modal Test</button>;
           </>
         } />
         <Route path="/login" element={<Login />} />

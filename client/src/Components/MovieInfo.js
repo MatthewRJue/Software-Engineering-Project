@@ -1,4 +1,5 @@
 import React from 'react';
+import TrailerPreview from "./TrailerPreview"
 
 const movieTitle = "title"
 const movieCategory = "Now Showing"
@@ -35,16 +36,22 @@ const Movieinfo = ({ isOpen, onClose, children }) => {
       </div>
       <div style={styles.row}>
         <div style={styles.column}>
-          <p style={styles.text}>MPAA-US: {movieRating}</p>
+          <p style={styles.text}>Producer: {movieProducer}</p>
         </div>
         <div style={styles.column}>
           <p style={styles.text}>Review: {movieReview}</p>
+        </div>
+      </div>
+      <div style={styles.row}>
+        <div style={styles.column}>
+          <p style={styles.text}>MPAA-US: {movieRating}</p>
         </div>
       </div>
       <div style={styles.largeTextContainer}>
         <p style={styles.largeText}>Synopsis: {movieSynopsis}</p>
       </div>
     </div>
+    <TrailerPreview embedId="rokGy0huYEA" />
       </div>
     </div>
   );
@@ -85,7 +92,9 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     minWidth: '550px',
-    margin: 'auto',
+    // margin: 'auto',
+    marginTop: "25px",
+    marginRight: "15px"
   },
   row: {
     display: 'flex',
