@@ -3,16 +3,23 @@ import './App.css';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import Navbar from './Components/Navbar';
-import React from 'react';
+import React, {useState} from 'react';
 import MovieList from "./Components/MovieList"
+import Movieinfo from "./Components/MovieInfo"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Update this line
 
+
+
 function App() {
+
+  const [isModalOpen, setModalOpen] = useState(true);
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={
           <><Navbar />
+          <Movieinfo isOpen={isModalOpen} onClose={() => setModalOpen(false)}/>
           <MovieList />
           </>
         } />
