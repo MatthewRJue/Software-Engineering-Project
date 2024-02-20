@@ -117,7 +117,7 @@ export default function Register() {
 
                 <div className="mt-8 border-b border-gray-900/10 pb-12">
                   <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
-                  <p className="mt-1 text-xs font-light leading-6 text-red-500">Required</p>
+                  <p className="mt-1 text-xs font-light leading-6 text-red-500">Required*</p>
 
                   <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div className="sm:col-span-3">
@@ -199,7 +199,7 @@ export default function Register() {
                       <label htmlFor="password-confirm" className="block text-sm font-medium leading-6 text-gray-900">
                         Confirm Password
                       </label>
-                      <div className="mt-2">
+                      <div className="mt-2 relative">
                         <input
                           id="password-confirm"
                           name="password-confirm"
@@ -207,8 +207,18 @@ export default function Register() {
                           onChange={(e) => setConfirmPassword(e.target.value)}
                           className={getPasswordInputClassName()}
                         />
-                        {password && confirmPassword && password !== confirmPassword && (
-                          <p className="text-red-500 text-xs mt-2">Passwords Do Not Match</p>
+                        {password && confirmPassword && (
+                          <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            {password === confirmPassword ? (
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-green-500">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                              </svg>
+                            ) : (
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-red-600">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                              </svg>
+                            )}
+                          </div>
                         )}
                       </div>
                     </div>
