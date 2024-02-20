@@ -6,9 +6,8 @@ import Navbar from './Components/Navbar';
 import React, {useState} from 'react';
 import MovieList from "./Components/MovieList"
 import Movieinfo from "./Components/MovieInfo"
+import Searchbar from './Components/Searchbar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Update this line
-
-
 
 function App() {
 
@@ -22,8 +21,10 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={
-          <><Navbar />
-          <MovieList />
+          <>
+            <Navbar />
+            <Searchbar />
+            <MovieList />
           </>
         } />
         <Route path="/login" element={<Login />} />
