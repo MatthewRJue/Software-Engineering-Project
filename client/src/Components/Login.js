@@ -1,4 +1,3 @@
-import Register from './Register';
 import { Link } from 'react-router-dom'; // Add this import at the top
 
 function Login() {
