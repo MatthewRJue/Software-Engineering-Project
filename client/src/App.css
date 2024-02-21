@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+  .seat {
+    @apply w-16 h-16 m-2 cursor-pointer border border-gray-300 flex items-center justify-center 
+            rounded-md bg-indigo-600 text-white;
+    font-size: 1.5rem; /* Adjust the font size based on your preference */
+  }
+  
+  .selected {
+    @apply bg-blue-500;
+  }
+  
+  .seat-map {
+    @apply grid gap-4 grid-cols-4;
+  }
+
+  #ticketDropdown {
+    @apply p-2 rounded-md border border-gray-300;
+    width: 150px; /* Adjust the width based on your preference */
+  }
