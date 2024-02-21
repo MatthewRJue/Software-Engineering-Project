@@ -8,6 +8,7 @@ import ShowtimeSelect from './Components/ShowtimeSelect';
 import SeatSelect from './Components/SeatSelect';
 import TicketSelect from './Components/TicketSelect';
 import Summary from './Components/Summary';
+import Checkout from './Components/Checkout';
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -106,6 +107,7 @@ function App() {
         <Route path="/select-seats" element={<SeatSelect />}/>
         <Route path="/select-tickets" element={<TicketSelect />}/>
         <Route path="/summary" element={<Summary />}/>
+        <Route path="/checkout" element={<Checkout />}/>
         {/* Add other routes here */}
       </Routes>
     </Router>

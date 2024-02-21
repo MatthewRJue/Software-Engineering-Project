@@ -49,6 +49,18 @@ export default function Summary() {
         return total + (ticketPrices[type] * count);
     }, 0);
 
+    const handleNextClick = () => {
+        navigate('/checkout', {
+            state: {
+                movie: movie,
+                selectedShowtime: selectedShowtime,
+                ticketCounts: ticketCounts,
+                ticketPrices: ticketPrices,
+                totalPrice: totalPrice
+            }
+        });
+    };
+
     return (
         <>
             <Navbar />
@@ -109,7 +121,7 @@ export default function Summary() {
                             </button>
                             <button
                                 className="px-20 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
-                                // onClick={() => handleNextClick(movie)}
+                                onClick={() => handleNextClick(movie)}
                             >
                             Next
                             </button>
