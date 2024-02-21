@@ -8,6 +8,7 @@ import ShowtimeSelect from './Components/ShowtimeSelect';
 import SeatSelect from './Components/SeatSelect';
 import TicketSelect from './Components/TicketSelect';
 import Summary from './Components/Summary';
+import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const movies = [
