@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
+import SelectionError from './SelectionError';
 
 export default function SeatSelect() {
   const location = useLocation();
@@ -9,10 +10,10 @@ export default function SeatSelect() {
   const selectedShowtime = location.state?.selectedShowtime;
   const navigate = useNavigate();
 
-
   const totalRows = 4; // A-D
   const totalColumns = 12; // 1-12
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
 
   const toggleSeatSelection = (seatId) => {
     const isSelected = selectedSeats.includes(seatId);
@@ -20,7 +21,11 @@ export default function SeatSelect() {
   };
 
   const handleNextClick = () => {
-    navigate('/select-tickets', { state: { movie, selectedShowtime, selectedSeats } });
+    if (selectedSeats.length === 0) {
+      setShowErrorDialog(true); // Show error dialog if no seats are selected
+    } else {
+      navigate('/select-tickets', { state: { movie, selectedShowtime, selectedSeats } });
+    }
   };
 
   return (
@@ -72,7 +77,7 @@ export default function SeatSelect() {
         </div>
       </div>
     </div>
+    {showErrorDialog && <SelectionError open={showErrorDialog} setOpen={setShowErrorDialog} />}
     </>
   );
 }
-
