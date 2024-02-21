@@ -63,11 +63,26 @@ const movies = [
   },
 ]
 
+const admins = [
+  {
+    email: "admin@uga.edu",
+    password: "godawgs"
+  }
+]
+
+const users = [
+  {
+    email: "student@uga,edu",
+    password: "godawgs"
+  }
+]
+
 function App() {
 
   const [categoryFilter, setCategoryFilter] = useState("All")
   const [searchFilter, setSearchFilter] = useState("")
   const [displayedMovies, setDisplayedMovies] = useState(movies)
+  const [userStatus, setUserStatus] = useState("LoggedOut")
 
   const filterMovies = (currentSearchFilter, currentCategoryFilter) => {
     var tempList = []

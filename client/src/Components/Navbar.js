@@ -1,7 +1,7 @@
 import { MapPinIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom'
 
-export default function Navbar() {
+export default function Navbar({status}) {
   return (
     <div className="lg:flex lg:items-center lg:justify-between p-10">
       <div className="min-w-0 flex-1">

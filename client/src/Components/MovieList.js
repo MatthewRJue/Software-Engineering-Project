@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-export default function MovieList({movies}) {
+export default function MovieList({movies, status}) {
   const [isInfoOpen, setInfoOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null); // Step 2
 
