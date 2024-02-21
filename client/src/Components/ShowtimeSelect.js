@@ -2,8 +2,6 @@ import { Fragment, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import SeatMap from './SeatMap';
-import TicketDropdown from './TicketDropdown';
 import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,21 +20,6 @@ const showtimes= [
     },
 ]
 
-const availableSeats = [
-        { number: 1 },
-        { number: 2 },
-        { number: 3 },
-        { number: 4 },
-        { number: 5 },
-        { number: 6 },
-        { number: 7 },
-        { number: 8 },
-        { number: 9 },
-        { number: 10 },
-        { number: 11 },
-        { number: 12 },
-    ];
-
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
@@ -47,24 +30,9 @@ export default function ShowtimeSelect() {
     const movie = location.state?.movie;
     const navigate = useNavigate();
 
-    const [selectedSeats, setSelectedSeats] = useState([]);
-    const [maxTickets, setMaxTickets] = useState(0);
-
-    const handleSeatSelect = (seatNumber, isSelected) => {
-        if (isSelected) {
-            setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, seatNumber]);
-        } else {
-            setSelectedSeats((prevSelectedSeats) =>
-                prevSelectedSeats.filter((seat) => seat !== seatNumber)
-            );
-        }
-        // Update the maximum tickets based on the selected seats
-        setMaxTickets(selectedSeats.length);
-    };
-
-    const handleTicketSelect = (selectedValue) => {
-        // Handle the selected ticket value (e.g., store it in state)
-        console.log(`Selected ${selectedValue} Senior and Youth tickets`);
+    // This function now acts as an event handler
+    const handleNextClick = () => {
+        navigate('/select-seats', { state: { movie: movie, selectedShowtime: selected } });
     };
 
     return (
@@ -146,25 +114,18 @@ export default function ShowtimeSelect() {
                                 onClick={() => navigate(-1)}
                                 className="px-20 py-2 text-sm font-semibold text-indigo-600 border border-indigo-600 rounded-md hover:text-indigo-400 hover:border-indigo-400"
                         >
-                                Cancel
+                        Cancel
                         </button>
-                        <button className="px-20 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500">
-                                Next
+                        <button 
+                                className="px-20 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
+                                onClick={() => handleNextClick(movie)}
+                        >
+                         Next
                         </button>
                 </div>
-
                 <div>
-                <h3 className="mt-4 text-xl font-semibold">Select Your Seats for {movie.name}</h3>
-                <SeatMap seats={availableSeats} onSeatSelect={handleSeatSelect} />
-                <p className="mt-4 text-xl font-semibold">Selected Seats: {selectedSeats.join(', ')}</p>
-                <TicketDropdown maxTickets={maxTickets} onSelect={handleTicketSelect} />
-                {/* Add other booking components and logic here */}
                 </div>
-
-                
                 </div>
-
-                
         </>
     )
 }
