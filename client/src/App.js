@@ -7,7 +7,8 @@ import React, {useState} from 'react';
 import MovieList from "./Components/MovieList"
 import Movieinfo from "./Components/MovieInfo"
 import Searchbar from './Components/Searchbar';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Update this line
+import ShowtimeSelect from './Components/ShowtimeSelect';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
         } />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/select-showtime" element={<ShowtimeSelect />}/>
         {/* Add other routes here */}
       </Routes>
     </Router>

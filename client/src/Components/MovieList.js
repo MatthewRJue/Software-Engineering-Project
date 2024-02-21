@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import MovieInfo from "./MovieInfo";
+import { useNavigate } from 'react-router-dom';
 
 const movies = [
   {
@@ -12,10 +13,11 @@ const movies = [
     runtime: '180 Minutes',
     review: '9/10',
     director: 'Christopher Nolan',
-    producer: 'Producer',
-    synopsis: 'Brief Movie Description',
-    cast: 'List of Actors',
+    producer: 'Christopher Nolan',
+    synopsis: 'During World War II, Lt. Gen. Leslie Groves Jr. appoints physicist J. Robert Oppenheimer to work on the top-secret Manhattan Project. Oppenheimer and a team of scientists spend years developing and designing the atomic bomb.',
+    cast: 'Cillian Murphy, Robert Downey Jr., Florence Pugh, Emily Blunt',
     category: 'Currently Showing',
+    embedId: 'uYPbbksJxIg',
   },
   {
     name: 'Past Lives',
@@ -27,16 +29,28 @@ const movies = [
     runtime: '96 Minutes',
     review: '8.5/10',
     director: 'Celine Song',
-    producer: 'Producer',
-    synopsis: 'Brief Movie Description',
-    cast: 'List of Actors',
+    producer: 'David Hinojosa',
+    synopsis: 'Nora and Hae Sung, two deeply connected childhood friends, are wrest apart after Noras family emigrates from South Korea. Decades later, they are reunited for one fateful week as they confront destiny, love and the choices that make a life.',
+    cast: 'Greta Lee, Teo Yoo, John Magaro, Isaac Cole',
     category: 'Currently Showing',
+    embedId: 'kA244xewjcI',
   },
 ]
 
 export default function MovieList() {
   const [isInfoOpen, setInfoOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null); // Step 2
+
+  const navigate = useNavigate();
+
+  const handleBookNowClick = (movie) => { // Updated to include movie parameter
+    const isLoggedIn = true;
+    if (isLoggedIn) {
+      navigate('/select-showtime', { state: { movie } }); // Updated to pass movie data
+    } else {
+      navigate('/login');
+    }
+  };
 
   const handleOpenInfo = (movie) => { // Step 3
     setSelectedMovie(movie);
@@ -68,7 +82,7 @@ export default function MovieList() {
               <button onClick={() => handleOpenInfo(movie)}  className="px-4 py-2 text-sm font-semibold text-indigo-600 border border-indigo-600 rounded-md hover:text-indigo-400 hover:border-indigo-400">
                 Details
               </button>
-              <button className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500">
+              <button onClick={() => handleBookNowClick(movie)} className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500">
                 Book Now
               </button>
             </div>
