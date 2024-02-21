@@ -2,42 +2,9 @@ import React, { useState } from "react";
 import MovieInfo from "./MovieInfo";
 import { useNavigate } from 'react-router-dom';
 
-const movies = [
-  {
-    name: 'Oppenheimer',
-    genre: 'Thriller/Action',
-    rating: 'R',
-    mpaarating: 'MPAA-US R',
-    imageUrl:
-      'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQlbnvo6cBTWi-aLAHChxPCNfCEDDqPWEejYpDvlA3ctbAmOJfVMCmflmEktyLC5wK69EGA',
-    runtime: '180 Minutes',
-    review: '9/10',
-    director: 'Christopher Nolan',
-    producer: 'Christopher Nolan',
-    synopsis: 'During World War II, Lt. Gen. Leslie Groves Jr. appoints physicist J. Robert Oppenheimer to work on the top-secret Manhattan Project. Oppenheimer and a team of scientists spend years developing and designing the atomic bomb.',
-    cast: 'Cillian Murphy, Robert Downey Jr., Florence Pugh, Emily Blunt',
-    category: 'Currently Showing',
-    embedId: 'uYPbbksJxIg',
-  },
-  {
-    name: 'Past Lives',
-    genre: 'Romance/Drama',
-    rating: 'PG-13',
-    mpaarating: 'MPAA-US PG-13',
-    imageUrl:
-      'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSVJSj4a-fYEBTJPV-ns5UszYf--tyTJU3nP8qkgLeJzOi8kWCYbQzYKEzEbbjWjiaJBuvW9Q',
-    runtime: '96 Minutes',
-    review: '8.5/10',
-    director: 'Celine Song',
-    producer: 'David Hinojosa',
-    synopsis: 'Nora and Hae Sung, two deeply connected childhood friends, are wrest apart after Noras family emigrates from South Korea. Decades later, they are reunited for one fateful week as they confront destiny, love and the choices that make a life.',
-    cast: 'Greta Lee, Teo Yoo, John Magaro, Isaac Cole',
-    category: 'Currently Showing',
-    embedId: 'kA244xewjcI',
-  },
-]
 
-export default function MovieList() {
+
+export default function MovieList({movies}) {
   const [isInfoOpen, setInfoOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null); // Step 2
 

@@ -6,9 +6,14 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Filter() {
+export default function Filter({setFilter}) {
   // State to manage the selected option
   const [selectedOption, setSelectedOption] = useState('All');
+
+  const handleSelection = (shortView, selection) => {
+    setFilter(selection)
+    setSelectedOption(shortView)
+  }
 
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -37,7 +42,7 @@ export default function Filter() {
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block w-full px-4 py-2 text-left text-sm'
                   )}
-                  onClick={() => setSelectedOption('All')}
+                  onClick={() => handleSelection('All', "All")}
                 >
                   All
                 </button>
@@ -50,7 +55,7 @@ export default function Filter() {
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block w-full px-4 py-2 text-left text-sm'
                   )}
-                  onClick={() => setSelectedOption('Current')}
+                  onClick={() => handleSelection('Current', "Currently Showing")}
                 >
                   Currently Showing
                 </button>
@@ -63,7 +68,7 @@ export default function Filter() {
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block w-full px-4 py-2 text-left text-sm'
                   )}
-                  onClick={() => setSelectedOption('Soon')}
+                  onClick={() => handleSelection('Soon', "Coming Soon")}
                 >
                   Coming Soon
                 </button>
