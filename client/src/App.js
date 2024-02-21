@@ -1,13 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import Navbar from './Components/Navbar';
-import React, {useState} from 'react';
 import MovieList from "./Components/MovieList"
-import Movieinfo from "./Components/MovieInfo"
 import Searchbar from './Components/Searchbar';
 import ShowtimeSelect from './Components/ShowtimeSelect';
+import SeatSelect from './Components/SeatSelect';
+import TicketSelect from './Components/TicketSelect';
+import Summary from './Components/Summary';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const movies = [
@@ -102,6 +102,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/select-showtime" element={<ShowtimeSelect />}/>
+        <Route path="/select-seats" element={<SeatSelect />}/>
+        <Route path="/select-tickets" element={<TicketSelect />}/>
+        <Route path="/summary" element={<Summary />}/>
         {/* Add other routes here */}
       </Routes>
     </Router>
