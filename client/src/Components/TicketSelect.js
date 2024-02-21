@@ -70,10 +70,10 @@ export default function TicketSelect() {
 
                         <div className="flex flex-row mt-16 space-x-4 justify-center">
                             <button 
-                                onClick={() => navigate(-3)}
+                                onClick={() => navigate(-1)}
                                 className="px-20 py-2 text-sm font-semibold text-indigo-600 border border-indigo-600 rounded-md hover:text-indigo-400 hover:border-indigo-400"
                             >
-                            Cancel
+                            Back to Seat Select
                             </button>
                             <button 
                                 className="px-20 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
