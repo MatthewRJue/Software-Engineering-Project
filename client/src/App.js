@@ -63,17 +63,16 @@ const movies = [
   },
 ]
 
-const admins = [
+const accounts = [
   {
     email: "admin@uga.edu",
-    password: "godawgs"
-  }
-]
-
-const users = [
+    password: "godawgs",
+    status: "Admin"
+  },
   {
     email: "student@uga,edu",
-    password: "godawgs"
+    password: "godawgs",
+    status: "User"
   }
 ]
 
@@ -82,7 +81,7 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState("All")
   const [searchFilter, setSearchFilter] = useState("")
   const [displayedMovies, setDisplayedMovies] = useState(movies)
-  const [userStatus, setUserStatus] = useState("LoggedOut")
+  const [userStatus, setUserStatus] = useState("Web")
 
   const filterMovies = (currentSearchFilter, currentCategoryFilter) => {
     var tempList = []
@@ -105,6 +104,16 @@ function App() {
     setDisplayedMovies(filterMovies(search, categoryFilter))
   }
 
+  const handleLoginAttempt = (email, password) => {
+    setUserStatus("Web")
+    for(const account in accounts){
+      if(account.email === email && account.password === password){
+        setUserStatus(account.status)
+        console.log(account.status)
+      }
+    }
+  }
+
 
   return (
     <Router>
@@ -116,7 +125,7 @@ function App() {
             <MovieList movies={displayedMovies}/>
           </>
         } />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login handleLogin={handleLoginAttempt}/>} />
         <Route path="/register" element={<Register />} />
         <Route path="/select-showtime" element={<ShowtimeSelect />}/>
         <Route path="/select-seats" element={<SeatSelect />}/>
