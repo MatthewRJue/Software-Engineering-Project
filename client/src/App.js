@@ -70,7 +70,7 @@ const accounts = [
     status: "Admin"
   },
   {
-    email: "student@uga,edu",
+    email: "student@uga.edu",
     password: "godawgs",
     status: "User"
   }
