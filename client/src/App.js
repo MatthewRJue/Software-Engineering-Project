@@ -108,10 +108,10 @@ function App() {
 
   const handleLoginAttempt = (email, password) => {
     setUserStatus("Web")
+    console.log(accounts)
     for(const account in accounts){
       if(account.email === email && account.password === password){
         setUserStatus(account.status)
-        console.log(account.status)
       }
     }
   }
