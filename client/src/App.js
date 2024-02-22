@@ -80,28 +80,29 @@ function App() {
 
   const [categoryFilter, setCategoryFilter] = useState("All")
   const [searchFilter, setSearchFilter] = useState("")
+
   const [displayedMovies, setDisplayedMovies] = useState(movies)
   const [userStatus, setUserStatus] = useState("Web")
 
   const filterMovies = (currentSearchFilter, currentCategoryFilter) => {
-    var tempList = []
-    for(let i = 0; i < movies.length; i++){
-      var partOfMovieTitle = movies[i].name.toLowerCase().substring(0, currentSearchFilter.length)
-      if((movies[i].category === currentCategoryFilter || currentCategoryFilter === "All") && partOfMovieTitle === currentSearchFilter.toLowerCase()){
-        tempList.push(movies[i])
-      }
-    }
-    return tempList
-  }
-
-  const handleCategoryChange = (category) => {
-    setCategoryFilter(category)
-    setDisplayedMovies(filterMovies(searchFilter, category))
+    var tempList = movies.filter(movie => {
+      const searchLower = currentSearchFilter.toLowerCase();
+      const matchesTitle = movie.name.toLowerCase().includes(searchLower);
+      const matchesGenre = movie.genre.toLowerCase().includes(searchLower);
+      const matchesCategory = currentCategoryFilter === "All" || movie.category === currentCategoryFilter;
+      return (matchesTitle || matchesGenre) && matchesCategory;
+    });
+    return tempList;
   }
 
   const handleSearchChange = (search) => {
-    setSearchFilter(search)
-    setDisplayedMovies(filterMovies(search, categoryFilter))
+    setSearchFilter(search);
+    setDisplayedMovies(filterMovies(search, categoryFilter));
+  }
+
+  const handleCategoryChange = (category) => {
+    setCategoryFilter(category);
+    setDisplayedMovies(filterMovies(searchFilter, category));
   }
 
   const handleLoginAttempt = (email, password) => {
@@ -121,7 +122,7 @@ function App() {
         <Route path="/" element={
           <>
             <Navbar />
-            <Searchbar setCategoryFilter={handleCategoryChange} setSearchFilter={handleSearchChange}/>
+            <Searchbar setSearchFilter={handleSearchChange} setCategoryFilter={handleCategoryChange}/>
             <MovieList movies={displayedMovies}/>
           </>
         } />
