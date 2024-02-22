@@ -9,6 +9,7 @@ import SeatSelect from './Components/SeatSelect';
 import TicketSelect from './Components/TicketSelect';
 import Summary from './Components/Summary';
 import Checkout from './Components/Checkout';
+import PageNotFound from './Components/PageNotFound';
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -134,6 +135,7 @@ function App() {
         <Route path="/summary" element={<Summary />}/>
         <Route path="/checkout" element={<Checkout />}/>
         {/* Add other routes here */}
+        <Route path="*" element={<PageNotFound />}/>
       </Routes>
     </Router>
   );
