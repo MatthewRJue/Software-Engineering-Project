@@ -11,6 +11,7 @@ import Summary from './Components/Summary';
 import Checkout from './Components/Checkout';
 import PageNotFound from './Components/PageNotFound';
 import { useState } from 'react';
+import ManageMovies from './Components/ManageMovies';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const movies = [
@@ -124,7 +125,8 @@ function App() {
           <>
             <Navbar />
             <Searchbar setSearchFilter={handleSearchChange} setCategoryFilter={handleCategoryChange}/>
-            <MovieList movies={displayedMovies}/>
+            {userStatus === "Admin" && <ManageMovies movieList={displayedMovies}/>}
+            {userStatus === "Web" && <MovieList movies={displayedMovies}/>}
           </>
         } />
         <Route path="/login" element={<Login handleLogin={handleLoginAttempt}/>} />
