@@ -1,14 +1,23 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import Navbar from './Navbar';
+import { Listbox, Transition } from '@headlessui/react';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
 const Checkout = () => {
     const location = useLocation();
     const { movie, selectedShowtime, ticketCounts, ticketPrices, totalPrice } = location.state || {};
     const navigate = useNavigate();
     const [showCreditCardForm, setShowCreditCardForm] = useState(true);
+    const [selectedCard, setSelectedCard] = useState(null);
+
+    // Sample saved cards
+    const savedCards = [
+        { id: 1, type: 'Mastercard', last4: '1234' },
+        { id: 2, type: 'VISA', last4: '5678' }
+    ];
 
     // Sales tax rate
     const salesTaxRate = 0.06; // 6%
@@ -20,7 +29,7 @@ const Checkout = () => {
     const finalTotal = totalPrice + salesTax;
 
     const handleNextClick = () => {
-        navigate('/', {
+        navigate('/purchase-confirmation', {
             state: {
                 movie: movie,
                 selectedShowtime: selectedShowtime,
@@ -33,9 +42,57 @@ const Checkout = () => {
 
     const renderCreditCardForm = (useSavedCard) => {
         if (useSavedCard) {
-            // Logic to handle rendering a form with saved card details
-            // This part is optional based on your requirements
-            return <div>Saved card details form</div>;
+            return (
+                <div className="mt-4">
+                    <h3 className="text-lg font-semibold mt-4 mb-6">Select Saved Card</h3>
+                    <Listbox value={selectedCard} onChange={setSelectedCard}>
+                        {({ open }) => (
+                            <>
+                                <div className="relative mt-1">
+                                    <Listbox.Button className="relative w-7/12 py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <span className="block truncate">{selectedCard ? `${selectedCard.type} ending in ${selectedCard.last4}` : 'Select a card'}</span>
+                                        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                            <ChevronUpDownIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
+                                        </span>
+                                    </Listbox.Button>
+                                    <Transition
+                                        show={open}
+                                        as={Fragment}
+                                        leave="transition ease-in duration-100"
+                                        leaveFrom="opacity-100"
+                                        leaveTo="opacity-0"
+                                    >
+                                        <Listbox.Options className="absolute z-10 mt-1 w-7/12 bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                                            {savedCards.map((card) => (
+                                                <Listbox.Option
+                                                    key={card.id}
+                                                    className={({ active }) =>
+                                                        `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-indigo-100' : 'text-gray-900'}`
+                                                    }
+                                                    value={card}
+                                                >
+                                                    {({ selected, active }) => (
+                                                        <>
+                                                            <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
+                                                                {card.type} ending in {card.last4}
+                                                            </span>
+                                                            {selected ? (
+                                                                <span className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? 'text-indigo-600' : 'text-indigo-600'}`}>
+                                                                    <CheckIcon className="w-5 h-5" aria-hidden="true" />
+                                                                </span>
+                                                            ) : null}
+                                                        </>
+                                                    )}
+                                                </Listbox.Option>
+                                            ))}
+                                        </Listbox.Options>
+                                    </Transition>
+                                </div>
+                            </>
+                        )}
+                    </Listbox>
+                </div>
+            );
         } else {
             return (
                 <div className="mt-4">
@@ -142,6 +199,7 @@ const Checkout = () => {
                         </div>
 
                         {/* Conditionally render the second address form */}
+                        {showCreditCardForm && renderCreditCardForm(true)}
                         {!showCreditCardForm && renderCreditCardForm(false)}
 
                         <div className="flex flex-row mt-16 space-x-4 justify-center">

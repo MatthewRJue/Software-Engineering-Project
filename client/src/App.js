@@ -13,6 +13,7 @@ import PageNotFound from './Components/PageNotFound';
 import { useState } from 'react';
 import ManageMovies from './Components/ManageMovies';
 import EditMovie from "./Components/EditMovie";
+import PurchaseConfirmation from './Components/PurchaseConfirmation';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const movies = [
@@ -137,6 +138,7 @@ function App() {
         <Route path="/select-tickets" element={<TicketSelect />}/>
         <Route path="/summary" element={<Summary />}/>
         <Route path="/checkout" element={<Checkout />}/>
+        <Route path="/purchase-confirmation" element={<PurchaseConfirmation />} />
         {/* Admin Routes */}
         <Route path="/edit-movie" element={<EditMovie />}/>
         {/* Add other routes here */}
