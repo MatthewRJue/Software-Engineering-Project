@@ -12,6 +12,7 @@ const Checkout = () => {
     const navigate = useNavigate();
     const [showCreditCardForm, setShowCreditCardForm] = useState(true);
     const [selectedCard, setSelectedCard] = useState(null);
+    const [promoCode, setPromoCode] = useState('');
 
     // Sample saved cards
     const savedCards = [
@@ -132,7 +133,6 @@ const Checkout = () => {
                                 <input type="text" id="cvv" name="cvv" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
                             </div>
                         </div>
-                        {/* Add any additional fields or buttons as needed */}
                     </form>
                 </div>
             );
@@ -166,6 +166,24 @@ const Checkout = () => {
                                 ))}
                             </li>
                         </ul>
+
+                        <div className="flex justify-center flex-col items-center mt-4 mb-4">
+                            <div className="flex items-center w-7/12 space-x-4">
+                                <input
+                                    type="text"
+                                    placeholder="Promotion Code"
+                                    value={promoCode}
+                                    onChange={(e) => setPromoCode(e.target.value)}
+                                    className="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                />
+                                <button
+                                    onClick={() => {/* Handle promotion code confirmation here */}}
+                                    className="px-6 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
+                                >
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
 
                         <ul className="flex justify-center flex-col items-center mt-2 mb-4">
                             <li className="items-center text-m w-7/12 text-center">
@@ -202,7 +220,7 @@ const Checkout = () => {
                         {showCreditCardForm && renderCreditCardForm(true)}
                         {!showCreditCardForm && renderCreditCardForm(false)}
 
-                        <div className="flex flex-row mt-16 space-x-4 justify-center">
+                        <div className="flex flex-row mt-20 space-x-4 justify-center">
                             <button 
                                 onClick={() => navigate(-1)}
                                 className="px-20 py-2 text-sm font-semibold text-indigo-600 border border-indigo-600 rounded-md hover:text-indigo-400 hover:border-indigo-400"
