@@ -86,7 +86,7 @@ function App() {
   const [searchFilter, setSearchFilter] = useState("")
 
   const [displayedMovies, setDisplayedMovies] = useState(movies)
-  const [userStatus, setUserStatus] = useState("Web")
+  const [userStatus, setUserStatus] = useState("Admin")
 
   const filterMovies = (currentSearchFilter, currentCategoryFilter) => {
     var tempList = movies.filter(movie => {
