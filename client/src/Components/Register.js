@@ -6,12 +6,21 @@ export default function Register() {
   const [showBillingAddress, setShowBillingAddress] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
   // Function to determine if the border should be green or red for confirmPassword
   const getPasswordInputClassName = () => {
     if (!confirmPassword) return "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"; // initial class
     return password === confirmPassword ? "block w-full rounded-md border-green-500 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" : "block w-full rounded-md border-red-500 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6";
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Perform registration logic here
+
+    // Navigate to RegistrationConfirmation with email in state
+    navigate('/registration-confirmation', { state: { email } });
   };
 
   // Function to render the address form
@@ -109,7 +118,7 @@ export default function Register() {
       <div className="w-full max-w-3xl p-8 space-y-8 bg-white shadow-lg rounded-xl">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-6 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-3xl">
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
               <div className="space-y-12">
                 <div className="border-b border-gray-900/10 pb-12">
                   <h2 className="text-2xl font-semibold leading-7 text-gray-900">Register</h2>
@@ -175,6 +184,8 @@ export default function Register() {
                           name="email"
                           type="email"
                           autoComplete="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
                           className="block w-7/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
@@ -263,12 +274,13 @@ export default function Register() {
                         <option>Mastercard</option>
                         <option>VISA</option>
                         <option>American Express</option>
+                        <option>Discover</option>
                       </select>
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="cardName" className="block text-sm font-medium text-gray-700">Name on Card</label>
+                    <label htmlFor="cardName" className="block text-sm font-medium mt-10 text-gray-700">Name on Card</label>
                     <input type="text" id="cardName" name="cardName" required className="mt-1 block w-8/12 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
                   </div>
 
@@ -330,6 +342,7 @@ export default function Register() {
                   <button
                     type="submit"
                     className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    onClick={handleSubmit}
                   >
                     Save
                   </button>

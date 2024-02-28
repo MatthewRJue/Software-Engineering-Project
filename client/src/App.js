@@ -14,6 +14,7 @@ import { useState } from 'react';
 import ManageMovies from './Components/ManageMovies';
 import EditMovie from "./Components/EditMovie";
 import PurchaseConfirmation from './Components/PurchaseConfirmation';
+import RegistrationConfirmation from './Components/RegistrationConfirmation';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const movies = [
@@ -86,7 +87,7 @@ function App() {
   const [searchFilter, setSearchFilter] = useState("")
 
   const [displayedMovies, setDisplayedMovies] = useState(movies)
-  const [userStatus, setUserStatus] = useState("Admin")
+  const [userStatus, setUserStatus] = useState("Web")
 
   const filterMovies = (currentSearchFilter, currentCategoryFilter) => {
     var tempList = movies.filter(movie => {
@@ -133,6 +134,7 @@ function App() {
         } />
         <Route path="/login" element={<Login handleLogin={handleLoginAttempt}/>} />
         <Route path="/register" element={<Register />} />
+        <Route path="/registration-confirmation" element={<RegistrationConfirmation />} />
         <Route path="/select-showtime" element={<ShowtimeSelect />}/>
         <Route path="/select-seats" element={<SeatSelect />}/>
         <Route path="/select-tickets" element={<TicketSelect />}/>
