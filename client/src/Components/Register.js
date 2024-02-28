@@ -267,6 +267,11 @@ export default function Register() {
                     </div>
                   </div>
 
+                  <div>
+                    <label htmlFor="cardName" className="block text-sm font-medium text-gray-700">Name on Card</label>
+                    <input type="text" id="cardName" name="cardName" required className="mt-1 block w-8/12 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
+                  </div>
+
                   <div className="mt-10 col-span-full">
                     <label htmlFor="card-number" className="block text-sm font-medium leading-6 text-gray-900">
                       Card Number
