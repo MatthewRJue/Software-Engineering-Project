@@ -1,7 +1,10 @@
 import { MapPinIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export default function Navbar({status}) {
+
   return (
     <div className="lg:flex lg:items-center lg:justify-between p-10">
       <div className="min-w-0 flex-1">
@@ -15,13 +18,46 @@ export default function Navbar({status}) {
           </div>
         </div>
       </div>
+      { status ==="Admin" &&
+      <div className="mt-0 flex lg:ml-4 lg:mt-0">
+        <span className="sm:ml-3">
+          <Link to="/" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Manage Movies
+          </Link>
+        </span>
+      </div>}
+      { status ==="Admin" &&
+      <div className="mt-0 flex lg:ml-4 lg:mt-0">
+        <span className="sm:ml-3">
+          <Link to="/" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Manage Promotions
+          </Link>
+        </span>
+      </div>}
+      { status ==="Admin" &&
+      <div className="mt-0 flex lg:ml-4 lg:mt-0">
+        <span className="sm:ml-3">
+          <Link to="/" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Manage Users
+          </Link>
+        </span>
+      </div>}
+      { status==="Web" &&
       <div className="mt-0 flex lg:ml-4 lg:mt-0">
         <span className="sm:ml-3">
           <Link to="/login" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             Login
           </Link>
         </span>
-      </div>
+      </div>}
+      { (status==="User" || status==="Admin") &&
+      <div className="mt-0 flex lg:ml-4 lg:mt-0">
+        <span className="sm:ml-3">
+          <Link to="/" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Logout
+          </Link>
+        </span>
+      </div>}
     </div>
   )
 }

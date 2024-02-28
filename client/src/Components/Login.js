@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom'; // Add this import at the top
 import {useState} from "react"
+import { useNavigate } from 'react-router-dom';
 
 function Login({handleLogin}) {
 
   const [currentEmail, setCurrentEmail] = useState("")
   const [currentPassword, setCurrentPassword] = useState("")
-
+  const navigate = useNavigate()
   const handleSubmit = () => {
     handleLogin(currentEmail, currentPassword)
+    navigate("/")
   }
 
   return (
@@ -26,7 +28,7 @@ function Login({handleLogin}) {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                   Email address
@@ -72,7 +74,6 @@ function Login({handleLogin}) {
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  onClick={handleSubmit}
                 >
                   Login
                 </button>

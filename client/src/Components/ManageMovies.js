@@ -1,17 +1,22 @@
 import React, { useState } from "react";
-import MovieInfo from "./MovieInfo";
+import EditMovie from "./EditMovie";
 import { useNavigate } from 'react-router-dom';
-
+import MovieInfo from "./MovieInfo";
 
 
 export default function ManageMovies({movieList, status}) {
   const [isInfoOpen, setInfoOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null); // Step 2
-
-  const navigate = useNavigate();
+  const [editOpen, setEditOpen] = useState(false);
 
   const handleEditMovie = (movie) => { // Updated to include movie parameter
-    navigate('/select-showtime', { state: { movie } }); // Updated to pass movie data
+    setSelectedMovie(movie)
+    setEditOpen(true)
+  };
+
+  const handleCloseEdit = () => {
+    setEditOpen(false);
+    setSelectedMovie(null); // Reset selected movie on close
   };
 
   const handleOpenInfo = (movie) => { // Step 3
@@ -52,6 +57,7 @@ export default function ManageMovies({movieList, status}) {
         ))}
       </ul>
       {selectedMovie && <MovieInfo isOpen={isInfoOpen} onClose={handleCloseInfo} movie={selectedMovie} />}
+      {selectedMovie && <EditMovie isOpen={editOpen} onClose={handleCloseEdit} movieToEdit={selectedMovie} />}
     </div>
   );
 }

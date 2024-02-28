@@ -12,6 +12,7 @@ import Checkout from './Components/Checkout';
 import PageNotFound from './Components/PageNotFound';
 import { useState } from 'react';
 import ManageMovies from './Components/ManageMovies';
+import EditMovie from "./Components/EditMovie";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const movies = [
@@ -109,10 +110,10 @@ function App() {
 
   const handleLoginAttempt = (email, password) => {
     setUserStatus("Web")
-    console.log(accounts)
     for(const account in accounts){
       if(account.email === email && account.password === password){
         setUserStatus(account.status)
+        console.log(account.status)
       }
     }
   }
@@ -123,7 +124,7 @@ function App() {
       <Routes>
         <Route path="/" element={
           <>
-            <Navbar />
+            <Navbar status={userStatus}/>
             <Searchbar setSearchFilter={handleSearchChange} setCategoryFilter={handleCategoryChange}/>
             {userStatus === "Admin" && <ManageMovies movieList={displayedMovies}/>}
             {userStatus === "Web" && <MovieList movies={displayedMovies}/>}
@@ -136,6 +137,8 @@ function App() {
         <Route path="/select-tickets" element={<TicketSelect />}/>
         <Route path="/summary" element={<Summary />}/>
         <Route path="/checkout" element={<Checkout />}/>
+        {/* Admin Routes */}
+        <Route path="/edit-movie" element={<EditMovie />}/>
         {/* Add other routes here */}
         <Route path="*" element={<PageNotFound />}/>
       </Routes>
