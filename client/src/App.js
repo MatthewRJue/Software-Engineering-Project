@@ -143,7 +143,7 @@ function App() {
   const [searchFilter, setSearchFilter] = useState("")
 
   const [displayedMovies, setDisplayedMovies] = useState(movies)
-  const [userStatus, setUserStatus] = useState("Web")
+  const [userStatus, setUserStatus] = useState("User")
   const [adminTab, setAdminTab] = useState("ManageMovies")
 
   const filterMovies = (currentSearchFilter, currentCategoryFilter) => {
@@ -194,6 +194,7 @@ function App() {
             {userStatus === "Admin" && adminTab === "ManageUsers" && <ManageUsers userList={accounts} />}
             {userStatus === "Admin" && adminTab === "ManagePromotions" && <ManagePromotions prices={prices} promoList={promotions}/>}
             {userStatus === "Web" && <MovieList movies={displayedMovies}/>}
+            {userStatus === "User" && <MovieList movies={displayedMovies} status={"User"}/>}
           </>
         } />
         <Route path="/login" element={<Login handleLogin={handleLoginAttempt}/>} />

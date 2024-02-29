@@ -49,7 +49,7 @@ export default function MovieList({movies, status}) {
               <button onClick={() => handleOpenInfo(movie)}  className="px-4 py-2 text-sm font-semibold text-indigo-600 border border-indigo-600 rounded-md hover:text-indigo-400 hover:border-indigo-400">
                 Details
               </button>
-              {movie.category === "Currently Showing" && 
+              {movie.category === "Currently Showing" && status === "User" && 
               <button onClick={() => handleBookNowClick(movie)} className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500">
                 Book Now
               </button>}
