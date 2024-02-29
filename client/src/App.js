@@ -16,6 +16,7 @@ import EditMovie from "./Components/EditMovie";
 import PurchaseConfirmation from './Components/PurchaseConfirmation';
 import RegistrationConfirmation from './Components/RegistrationConfirmation';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ManageUsers from './Components/ManageUsers';
 
 const movies = [
   {
@@ -72,12 +73,34 @@ const accounts = [
   {
     email: "admin@uga.edu",
     password: "godawgs",
-    status: "Admin"
+    status: "Admin",
+    name: "John Doe",
+    phone: "7451238964",
+    isSuspended: false
   },
   {
     email: "student@uga.edu",
     password: "godawgs",
-    status: "User"
+    status: "User",
+    name: "User 123",
+    phone: "1234567899",
+    isSuspended: false
+  },
+  {
+    email: "anotherAdmin@uga.edu",
+    password: "godawgs",
+    status: "Admin",
+    name: "Dr. Professor",
+    phone: "3216541234",
+    isSuspended: false
+  },
+  {
+    email: "student@uga.edu",
+    password: "godawgs",
+    status: "User",
+    name: "Student 2",
+    phone: "1112223334",
+    isSuspended: false
   }
 ]
 
@@ -87,7 +110,8 @@ function App() {
   const [searchFilter, setSearchFilter] = useState("")
 
   const [displayedMovies, setDisplayedMovies] = useState(movies)
-  const [userStatus, setUserStatus] = useState("Web")
+  const [userStatus, setUserStatus] = useState("Admin")
+  const [adminTab, setAdminTab] = useState("ManageMovies")
 
   const filterMovies = (currentSearchFilter, currentCategoryFilter) => {
     var tempList = movies.filter(movie => {
@@ -110,6 +134,10 @@ function App() {
     setDisplayedMovies(filterMovies(searchFilter, category));
   }
 
+  const handleAdminTab = (tab) => {
+    setAdminTab(tab)
+  }
+
   const handleLoginAttempt = (email, password) => {
     setUserStatus("Web")
     for(const account in accounts){
@@ -120,15 +148,17 @@ function App() {
     }
   }
 
+ 
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={
           <>
-            <Navbar status={userStatus}/>
+            <Navbar status={userStatus} updateAdminTab={handleAdminTab}/>
             <Searchbar setSearchFilter={handleSearchChange} setCategoryFilter={handleCategoryChange}/>
-            {userStatus === "Admin" && <ManageMovies movieList={displayedMovies}/>}
+            {userStatus === "Admin" && adminTab === "ManageMovies" && <ManageMovies movieList={displayedMovies}/>}
+            {userStatus === "Admin" && adminTab === "ManageUsers" && <ManageUsers userList={accounts} />}
             {userStatus === "Web" && <MovieList movies={displayedMovies}/>}
           </>
         } />

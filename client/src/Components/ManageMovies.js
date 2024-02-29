@@ -2,12 +2,21 @@ import React, { useState } from "react";
 import EditMovie from "./EditMovie";
 import { useNavigate } from 'react-router-dom';
 import MovieInfo from "./MovieInfo";
-
+import AddMovie from "./AddMovie"
 
 export default function ManageMovies({movieList, status}) {
   const [isInfoOpen, setInfoOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null); // Step 2
   const [editOpen, setEditOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false)
+
+  const handleAddMovie = () => {
+    setAddOpen(true)
+  }
+
+  const handleCloseAdd = () => {
+    setAddOpen(false)
+  }
 
   const handleEditMovie = (movie) => { // Updated to include movie parameter
     setSelectedMovie(movie)
@@ -30,6 +39,11 @@ export default function ManageMovies({movieList, status}) {
 
   return (
     <div>
+        <div>
+            <button onClick={handleAddMovie} className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500">
+                Add Movie
+            </button>
+        </div>
       <ul className="divide-y divide-gray-100 p-20">
         {movieList.map((movie) => (
           <li key={movie.name} className="flex justify-between gap-x-6 py-5 bg-white shadow-lg rounded-xl p-8 space-y-8 mb-6">
@@ -58,6 +72,7 @@ export default function ManageMovies({movieList, status}) {
       </ul>
       {selectedMovie && <MovieInfo isOpen={isInfoOpen} onClose={handleCloseInfo} movie={selectedMovie} />}
       {selectedMovie && <EditMovie isOpen={editOpen} onClose={handleCloseEdit} movieToEdit={selectedMovie} />}
+      <AddMovie isOpen={addOpen} onClose={handleCloseAdd} />
     </div>
   );
 }

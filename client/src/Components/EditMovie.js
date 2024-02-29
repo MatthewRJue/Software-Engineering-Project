@@ -5,14 +5,14 @@ function EditMovie({isOpen, onClose, movieToEdit}) {
     const [name, setName] = useState(movieToEdit.name);
     const [genre, setGenre] = useState(movieToEdit.genre);
     const [rating, setRating] = useState(movieToEdit.rating);
-    const [imageURL, setImageURL] = useState(movieToEdit.imageURL);
+    const [imageURL, setImageURL] = useState(movieToEdit.imageUrl);
     const [runtime, setRuntime] = useState(movieToEdit.runtime);
     const [review, setReview] = useState(movieToEdit.review);
     const [director, setDirector] = useState(movieToEdit.director);
     const [producer, setProducer] = useState(movieToEdit.producer);
     const [cast, setCast] = useState(movieToEdit.cast);
     const [category, setCategory] = useState(movieToEdit.category);
-    const [embedID, setEmbedID] = useState(movieToEdit.embedID);
+    const [embedID, setEmbedID] = useState(movieToEdit.embedId);
     const [synopsis, setSynopsis] = useState(movieToEdit.synopsis);
 
 
