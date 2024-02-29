@@ -129,6 +129,25 @@ const promotions = [
   }
 ]
 
+const prices = [
+  {
+    name: "Children",
+    price: "10.99"
+  },
+  {
+    name: "Adults",
+    price: "14.99"
+  },
+  {
+    name: "Seniors",
+    price: "12.99"
+  },
+  {
+    name: "Booking Fee",
+    percent: "3"
+  }
+]
+
 function App() {
 
   const [categoryFilter, setCategoryFilter] = useState("All")
@@ -184,7 +203,7 @@ function App() {
             <Searchbar setSearchFilter={handleSearchChange} setCategoryFilter={handleCategoryChange}/>
             {userStatus === "Admin" && adminTab === "ManageMovies" && <ManageMovies movieList={displayedMovies}/>}
             {userStatus === "Admin" && adminTab === "ManageUsers" && <ManageUsers userList={accounts} />}
-            {userStatus === "Admin" && adminTab === "ManagePromotions" && <ManagePromotions promoList={promotions}/>}
+            {userStatus === "Admin" && adminTab === "ManagePromotions" && <ManagePromotions prices={prices} promoList={promotions}/>}
             {userStatus === "Web" && <MovieList movies={displayedMovies}/>}
           </>
         } />
