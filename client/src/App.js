@@ -129,24 +129,12 @@ const promotions = [
   }
 ]
 
-const prices = [
-  {
-    name: "Children",
-    price: "10.99"
-  },
-  {
-    name: "Adults",
-    price: "14.99"
-  },
-  {
-    name: "Seniors",
-    price: "12.99"
-  },
-  {
-    name: "Booking Fee",
-    percent: "3"
-  }
-]
+const prices = {
+  child: "10.99",
+  adult: "14.99",
+  senior: "11.99",
+  bookingFeePercent: "3"
+}
 
 function App() {
 

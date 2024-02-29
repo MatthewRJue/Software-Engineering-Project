@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import EditPromotion from "./EditPromotion";
 import AddPromotion from "./AddPromotion";
 
-export default function ManagePromotions({promoList, status}) {
+export default function ManagePromotions({promoList, status, prices}) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedPromotion, setSelectedPromotion] = useState(null); // Step 2
   const [addPromotionOpen, setAddPromotionOpen] = useState(false)
+  const [editPrices, setEditPrices] = useState(false)
   const promoIcon = "https://static.vecteezy.com/system/resources/thumbnails/027/381/485/small_2x/discount-icon-percentage-icon-shopping-tags-outline-black-discount-label-pricing-tag-retail-related-badges-special-offer-symbol-sale-sign-business-and-finance-design-elements-vector.jpg"
   
+  const handleOpenEditPrices = () => {
+    setEditPrices(true)
+  }
+
   const handleOpenAddPromo = () => {
     setAddPromotionOpen(true)
   }
@@ -31,6 +36,9 @@ export default function ManagePromotions({promoList, status}) {
         <div>
             <button onClick={handleOpenAddPromo} className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500">
                 Add Promotion
+            </button>
+            <button onClick={handleOpenEditPrices} className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500">
+                Edit Prices
             </button>
         </div>
       <ul className="divide-y divide-gray-100 p-20">
