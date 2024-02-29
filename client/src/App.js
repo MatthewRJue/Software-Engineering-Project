@@ -131,9 +131,9 @@ const promotions = [
 ]
 
 const prices = {
-  child: "10.99",
-  adult: "14.99",
-  senior: "11.99",
+  child: "5.00",
+  adult: "10.00",
+  senior: "7.00",
   bookingFeePercent: "3"
 }
 
@@ -143,7 +143,7 @@ function App() {
   const [searchFilter, setSearchFilter] = useState("")
 
   const [displayedMovies, setDisplayedMovies] = useState(movies)
-  const [userStatus, setUserStatus] = useState("Admin")
+  const [userStatus, setUserStatus] = useState("Web")
   const [adminTab, setAdminTab] = useState("ManageMovies")
 
   const filterMovies = (currentSearchFilter, currentCategoryFilter) => {
