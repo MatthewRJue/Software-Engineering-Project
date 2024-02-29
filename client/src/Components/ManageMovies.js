@@ -39,7 +39,7 @@ export default function ManageMovies({movieList, status}) {
 
   return (
     <div>
-        <div>
+        <div className="flex items-center justify-center h-full mt-6">
             <button onClick={handleAddMovie} className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500">
                 Add Movie
             </button>

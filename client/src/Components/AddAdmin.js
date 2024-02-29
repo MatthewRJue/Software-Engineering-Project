@@ -17,7 +17,7 @@ function AddAdmin({isOpen, onClose}) {
    
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center" onClick={onClose}>
-        <div className="relative top-52 bottom-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white" onClick={e => e.stopPropagation()}>
+        <div className="relative top-10 bottom-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white" onClick={e => e.stopPropagation()}>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="moviename" className="block text-sm font-medium text-gray-700">Name:</label>
