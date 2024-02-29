@@ -17,6 +17,7 @@ import PurchaseConfirmation from './Components/PurchaseConfirmation';
 import RegistrationConfirmation from './Components/RegistrationConfirmation';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ManageUsers from './Components/ManageUsers';
+import ManagePromotions from './Components/ManagePromotions';
 
 const movies = [
   {
@@ -104,6 +105,30 @@ const accounts = [
   }
 ]
 
+const promotions = [
+  {
+    name: "Half Off Any Movie",
+    id: "4837562",
+    percent: "50",
+    expiration: "03/12/2024",
+    validMovie: "All"
+  },
+  {
+    name: "25% Off Movie",
+    id: "8473629",
+    percent: "25",
+    expiration: "03/16/2024",
+    validMovie: "One Love, Past Lives"
+  },
+  {
+    name: "Past Lives Flash Sale",
+    id: "8478897",
+    percent: "70",
+    expiration: "03/05/2024",
+    validMovie: "Past Lives"
+  }
+]
+
 function App() {
 
   const [categoryFilter, setCategoryFilter] = useState("All")
@@ -159,6 +184,7 @@ function App() {
             <Searchbar setSearchFilter={handleSearchChange} setCategoryFilter={handleCategoryChange}/>
             {userStatus === "Admin" && adminTab === "ManageMovies" && <ManageMovies movieList={displayedMovies}/>}
             {userStatus === "Admin" && adminTab === "ManageUsers" && <ManageUsers userList={accounts} />}
+            {userStatus === "Admin" && adminTab === "ManagePromotions" && <ManagePromotions promoList={promotions}/>}
             {userStatus === "Web" && <MovieList movies={displayedMovies}/>}
           </>
         } />
