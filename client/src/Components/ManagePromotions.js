@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import EditPromotion from "./EditPromotion";
 import AddPromotion from "./AddPromotion";
+import EditPrices from "./EditPrices";
 
 export default function ManagePromotions({promoList, status, prices}) {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -11,6 +12,10 @@ export default function ManagePromotions({promoList, status, prices}) {
   
   const handleOpenEditPrices = () => {
     setEditPrices(true)
+  }
+
+  const handleCloseEditPrices = () => {
+    setEditPrices(false)
   }
 
   const handleOpenAddPromo = () => {
@@ -66,6 +71,7 @@ export default function ManagePromotions({promoList, status, prices}) {
       </ul>
     {selectedPromotion && <EditPromotion isOpen={isEditOpen} onClose={handleCloseEdit} promoToEdit={selectedPromotion}/>}
     <AddPromotion onClose={handleCloseAddPromo} isOpen={addPromotionOpen}/>
+    <EditPrices onClose={handleCloseEditPrices} isOpen={editPrices} prices={prices}/>
     </div>
   );
 }
