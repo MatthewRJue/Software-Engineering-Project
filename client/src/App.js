@@ -76,7 +76,7 @@ const accounts = [
     status: "Admin",
     name: "John Doe",
     phone: "7451238964",
-    isSuspended: false
+    suspensionStatus: "Active"
   },
   {
     email: "student@uga.edu",
@@ -84,7 +84,7 @@ const accounts = [
     status: "User",
     name: "User 123",
     phone: "1234567899",
-    isSuspended: false
+    suspensionStatus: "Active"
   },
   {
     email: "anotherAdmin@uga.edu",
@@ -92,7 +92,7 @@ const accounts = [
     status: "Admin",
     name: "Dr. Professor",
     phone: "3216541234",
-    isSuspended: false
+    suspensionStatus: "Active"
   },
   {
     email: "student@uga.edu",
@@ -100,7 +100,7 @@ const accounts = [
     status: "User",
     name: "Student 2",
     phone: "1112223334",
-    isSuspended: false
+    suspensionStatus: "Suspended"
   }
 ]
 

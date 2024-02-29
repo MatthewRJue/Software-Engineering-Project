@@ -1,6 +1,6 @@
 import {useState} from "react"
 
-function EditMovie({isOpen, onClose}) {
+function AddMovie({isOpen, onClose}) {
 
     const [name, setName] = useState("");
     const [genre, setGenre] = useState("");
@@ -22,9 +22,9 @@ function EditMovie({isOpen, onClose}) {
         onClose()
     }
 
-    console.log("test1")
+   
     if (!isOpen) return null;
-    console.log("test2")
+   
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center" onClick={onClose}>
         <div className="relative top-52 bottom-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white" onClick={e => e.stopPropagation()}>
@@ -162,4 +162,4 @@ function EditMovie({isOpen, onClose}) {
     );
 }
 
-export default EditMovie;
+export default AddMovie
