@@ -18,6 +18,7 @@ import RegistrationConfirmation from './Components/RegistrationConfirmation';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ManageUsers from './Components/ManageUsers';
 import ManagePromotions from './Components/ManagePromotions';
+import Profile from './Components/Profile';
 
 const movies = [
   {
@@ -204,6 +205,7 @@ function App() {
         <Route path="/summary" element={<Summary />}/>
         <Route path="/checkout" element={<Checkout />}/>
         <Route path="/purchase-confirmation" element={<PurchaseConfirmation />} />
+        <Route path="/profile" element={<Profile />} />
         {/* Admin Routes */}
         <Route path="/edit-movie" element={<EditMovie />}/>
         {/* Add other routes here */}
