@@ -10,7 +10,7 @@ import TicketSelect from './Components/TicketSelect';
 import Summary from './Components/Summary';
 import Checkout from './Components/Checkout';
 import PageNotFound from './Components/PageNotFound';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ManageMovies from './Components/ManageMovies';
 import EditMovie from "./Components/EditMovie";
 import PurchaseConfirmation from './Components/PurchaseConfirmation';
@@ -19,116 +19,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ManageUsers from './Components/ManageUsers';
 import ManagePromotions from './Components/ManagePromotions';
 import Profile from './Components/Profile';
-
-const movies = [
-  {
-    name: 'Oppenheimer',
-    genre: 'Thriller/Action',
-    rating: 'R',
-    mpaarating: 'MPAA-US R',
-    imageUrl:
-      'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQlbnvo6cBTWi-aLAHChxPCNfCEDDqPWEejYpDvlA3ctbAmOJfVMCmflmEktyLC5wK69EGA',
-    runtime: '180 Minutes',
-    review: '9/10',
-    director: 'Christopher Nolan',
-    producer: 'Christopher Nolan',
-    synopsis: 'During World War II, Lt. Gen. Leslie Groves Jr. appoints physicist J. Robert Oppenheimer to work on the top-secret Manhattan Project. Oppenheimer and a team of scientists spend years developing and designing the atomic bomb.',
-    cast: 'Cillian Murphy, Robert Downey Jr., Florence Pugh, Emily Blunt',
-    category: 'Currently Showing',
-    embedId: 'uYPbbksJxIg',
-  },
-  {
-    name: 'Past Lives',
-    genre: 'Romance/Drama',
-    rating: 'PG-13',
-    mpaarating: 'MPAA-US PG-13',
-    imageUrl:
-      'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSVJSj4a-fYEBTJPV-ns5UszYf--tyTJU3nP8qkgLeJzOi8kWCYbQzYKEzEbbjWjiaJBuvW9Q',
-    runtime: '96 Minutes',
-    review: '8.5/10',
-    director: 'Celine Song',
-    producer: 'David Hinojosa',
-    synopsis: 'Nora and Hae Sung, two deeply connected childhood friends, are wrest apart after Noras family emigrates from South Korea. Decades later, they are reunited for one fateful week as they confront destiny, love and the choices that make a life.',
-    cast: 'Greta Lee, Teo Yoo, John Magaro, Isaac Cole',
-    category: 'Currently Showing',
-    embedId: 'kA244xewjcI',
-  },
-  {
-    name: 'Bob Marley: One Love',
-    genre: 'Musical/Drama',
-    rating: 'PG-13',
-    mpaarating: 'MPAA-US PG-13',
-    imageUrl:
-      'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSKn3j5_v44K-TyRdu2pXk6eRK3IHPo1YpdHr2s42eytCS7a7rO',
-    runtime: '107 Minutes',
-    review: '6.6/10',
-    director: 'Reinaldo Marcus Green',
-    producer: 'Ziggy Marley',
-    synopsis: 'The story of how reggae icon Bob Marley overcame adversity, and the journey behind his revolutionary music.',
-    cast: 'Kingsley Ben-Adir, Lashana Lynch, James Norton, Tosin Cole',
-    category: 'Coming Soon',
-    embedId: 'ajw425Kuvtw',
-  },
-]
-
-const accounts = [
-  {
-    email: "admin@uga.edu",
-    password: "godawgs",
-    status: "Admin",
-    name: "John Doe",
-    phone: "7451238964",
-    suspensionStatus: "Active"
-  },
-  {
-    email: "student@uga.edu",
-    password: "godawgs",
-    status: "User",
-    name: "User 123",
-    phone: "1234567899",
-    suspensionStatus: "Active"
-  },
-  {
-    email: "anotherAdmin@uga.edu",
-    password: "godawgs",
-    status: "Admin",
-    name: "Dr. Professor",
-    phone: "3216541234",
-    suspensionStatus: "Active"
-  },
-  {
-    email: "student@uga.edu",
-    password: "godawgs",
-    status: "User",
-    name: "Student 2",
-    phone: "1112223334",
-    suspensionStatus: "Suspended"
-  }
-]
-
-const promotions = [
-  {
-    name: "Half Off Any Movie",
-    id: "4837562",
-    percent: "50",
-    expiration: "03/12/2024",
-    validMovie: "All"
-  },
-  {
-    name: "25% Off Movie",
-    id: "8473629",
-    percent: "25",
-    expiration: "03/16/2024",
-    validMovie: "One Love, Past Lives"
-  },
-  {
-    name: "Past Lives Flash Sale",
-    id: "8478897",
-    percent: "70",
-    expiration: "03/05/2024",
-    validMovie: "Past Lives"
-  }
-]
+import {collection, getDocs } from 'firebase/firestore';
+import { db } from './firebaseConfig';
+import './firebaseConfig'; // Add this line to prevent firebase not loading error
 
 const prices = {
   child: "5.00",
@@ -138,13 +31,56 @@ const prices = {
 }
 
 function App() {
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [searchFilter, setSearchFilter] = useState("");
+  const [displayedMovies, setDisplayedMovies] = useState([]);
+  const [userStatus, setUserStatus] = useState("Admin");
+  const [adminTab, setAdminTab] = useState("ManageMovies");
+  const [movies, setMovies] = useState([]);
+  const [accounts, setAccounts] = useState([]);
+  const [promotions, setPromotions] = useState([]);
 
-  const [categoryFilter, setCategoryFilter] = useState("All")
-  const [searchFilter, setSearchFilter] = useState("")
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const moviesCollection = collection(db, 'movies');
+        const moviesSnapshot = await getDocs(moviesCollection);
+        const moviesData = moviesSnapshot.docs.map(doc => ({id:doc.id,...doc.data()}));
+        setMovies(moviesData);
+        // Set displayedMovies after movies has been initialized
+        setDisplayedMovies(moviesData);
+      } catch (error) {
+        console.error('Error fetching movies: ', error);
+      }
+    };
 
-  const [displayedMovies, setDisplayedMovies] = useState(movies)
-  const [userStatus, setUserStatus] = useState("User")
-  const [adminTab, setAdminTab] = useState("ManageMovies")
+
+    const fetchAccounts = async () => {
+      try {
+        const accountsCollection = collection(db, 'accounts');
+        const accountsSnapshot = await getDocs(accountsCollection);
+        const accountsData = accountsSnapshot.docs.map(doc => ({id:doc.id,...doc.data()}));
+        setAccounts(accountsData);
+      } catch (error) {
+        console.error('Error fetching accounts: ', error);
+      }
+    };
+
+    const fetchPromotions = async () => {
+      try {
+        const promotionsCollection = collection(db, 'promotions');
+        const promotionsSnapshot = await getDocs(promotionsCollection);
+        const promotionsData = promotionsSnapshot.docs.map(doc => ({id:doc.id,...doc.data()}));
+        setPromotions(promotionsData);
+      } catch (error) {
+        console.error('Error fetching promotions: ', error);
+      }
+    };
+
+    fetchMovies();
+    fetchAccounts();
+    fetchPromotions();
+  }, []);
 
   const filterMovies = (currentSearchFilter, currentCategoryFilter) => {
     var tempList = movies.filter(movie => {

@@ -1,6 +1,10 @@
 import {useState} from "react"
+import { doc, updateDoc, deleteDoc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig';
 
-function EditUser({isOpen, onClose, userToEdit}) {
+const EditUser = ({isOpen, onClose, userToEdit}) => {
+
+    const id = userToEdit.id;
 
     const [name, setName] = useState(userToEdit.name);
     const [email, setEmail] = useState(userToEdit.email);
@@ -8,11 +12,30 @@ function EditUser({isOpen, onClose, userToEdit}) {
     const [status, setStatus] = useState(userToEdit.status);
     const [suspensionStatus, setSuspensionStatus] = useState(userToEdit.suspensionStatus);
 
-    const handleSubmit = (event) => {
+    const handleUpdate = async (event) => {
         event.preventDefault();
-        //Add movie info update function
-        onClose()
-    }
+        
+        // New user object with updated fields
+        const updatedUser = {
+            id, // Use the id variable here
+            name,
+            email,
+            phone,
+            status,
+            suspensionStatus
+        }
+
+        // Update the document in Firestore
+        await updateDoc(doc(db, "accounts", id), updatedUser);
+        onClose();
+    };
+
+    // Function to handle user deletion
+    const handleDelete = async () => {
+        // Delete the document in Firestore
+        await deleteDoc(doc(db, "accounts", id));
+        onClose();
+    };
 
 
     if (!isOpen || !userToEdit) return null;
@@ -20,7 +43,7 @@ function EditUser({isOpen, onClose, userToEdit}) {
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center" onClick={onClose}>
         <div className="relative top-8 bottom-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white" onClick={e => e.stopPropagation()}>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleUpdate} className="space-y-4">
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">Name:</label>
             <input
@@ -73,6 +96,8 @@ function EditUser({isOpen, onClose, userToEdit}) {
           </div>
           <div className="flex flex-row mt-10 space-x-4 justify-center">
                 <button 
+                  type="button"
+                  onClick={handleDelete}
                   className="px-20 py-2 text-sm font-semibold text-white bg-red-500 border rounded-md hover:bg-red-400"
                 >
                 Delete User

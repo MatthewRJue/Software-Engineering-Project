@@ -1,4 +1,6 @@
 import {useState} from "react"
+import { doc, collection, addDoc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig';
 
 function AddAdmin({isOpen, onClose}) {
 
@@ -6,14 +8,26 @@ function AddAdmin({isOpen, onClose}) {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        //Add movie info post function
+        // Add a new document with a generated id.
+        try {
+        await addDoc(collection(db, "admins"), { ...newAdmin });
+        } catch (error) {
+          console.log(error + "Error adding document");
+        }
         onClose()
     }
 
    
     if (!isOpen) return null;
+
+    const newAdmin = {
+        id:doc.id,
+        name,
+        email,
+        phone
+    }
    
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center" onClick={onClose}>

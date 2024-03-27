@@ -1,22 +1,38 @@
 import {useState} from "react"
+import { doc, collection, addDoc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig';
 
 function AddPromotion({isOpen, onClose}) {
 
     const [name, setName] = useState("");
-    const [id, setId] = useState("")
+    const [ein, setEIN] = useState("")
     const [percent, setPercent] = useState("")
     const [expiration, setExpiration] = useState("")
     const [validMovie, setValidMovie] = useState("")
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        //Add movie info post function
+        // Add a new document with a generated id.
+        try {
+        await addDoc(collection(db, "promotions"), { ...newPromotion });
+        } catch (error) {
+          console.log(error + "Error adding document");
+        }
         onClose()
     }
 
    
     if (!isOpen) return null;
    
+    const newPromotion = {
+        id:doc.id,
+        name,
+        ein,
+        percent,
+        expiration,
+        validMovie
+    }
+
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center" onClick={onClose}>
         <div className="relative top-8 bottom-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white" onClick={e => e.stopPropagation()}>
@@ -36,9 +52,9 @@ function AddPromotion({isOpen, onClose}) {
             <input
               id="attribute2"
               type="text"
-              value={id}
+              value={ein}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              onChange={(e) => setId(e.target.value)}
+              onChange={(e) => setEIN(e.target.value)}
             />
           </div>
           <div>

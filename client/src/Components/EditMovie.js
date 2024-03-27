@@ -1,34 +1,63 @@
 import {useState} from "react"
+import { doc, updateDoc, deleteDoc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig';
 
-function EditMovie({isOpen, onClose, movieToEdit}) {
+const EditMovie = ({isOpen, onClose, movieToEdit}) => {
+
+    const id = movieToEdit.id;
 
     const [name, setName] = useState(movieToEdit.name);
     const [genre, setGenre] = useState(movieToEdit.genre);
     const [rating, setRating] = useState(movieToEdit.rating);
-    const [imageURL, setImageURL] = useState(movieToEdit.imageUrl);
+    const [imageURL, setImageURL] = useState(movieToEdit.imageURL);
     const [runtime, setRuntime] = useState(movieToEdit.runtime);
     const [review, setReview] = useState(movieToEdit.review);
     const [director, setDirector] = useState(movieToEdit.director);
     const [producer, setProducer] = useState(movieToEdit.producer);
     const [cast, setCast] = useState(movieToEdit.cast);
     const [category, setCategory] = useState(movieToEdit.category);
-    const [embedID, setEmbedID] = useState(movieToEdit.embedId);
+    const [embedID, setEmbedID] = useState(movieToEdit.embedID);
     const [synopsis, setSynopsis] = useState(movieToEdit.synopsis);
 
+    const handleUpdate = async (event) => {
+      event.preventDefault();
+    
+      // New movie object with updated fields
+      const updatedMovie = {
+        id, // Use the id variable here
+        name,
+        genre,
+        rating,
+        imageURL,
+        runtime,
+        review,
+        director,
+        producer,
+        cast,
+        category,
+        embedID,
+        synopsis
+      }
+    
+      // Update the document in Firestore
+      await updateDoc(doc(db, "movies", id), updatedMovie);
+      onClose();
+    };
+    
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        //Add movie info update function
-        onClose()
-    }
-
+    // Function to handle movie deletion
+    const handleDelete = async () => {
+      // Delete the document in Firestore
+      await deleteDoc(doc(db, "movies", id));
+      onClose();
+    };
 
     if (!isOpen || !movieToEdit) return null;
 
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center" onClick={onClose}>
         <div className="relative top-52 bottom-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white" onClick={e => e.stopPropagation()}>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleUpdate} className="space-y-4">
           <div>
             <label htmlFor="moviename" className="block text-sm font-medium text-gray-700">Title:</label>
             <input
@@ -150,17 +179,20 @@ function EditMovie({isOpen, onClose, movieToEdit}) {
             ></textarea>
           </div>
           <div className="flex flex-row mt-10 space-x-4 justify-center">
-                <button 
-                  className="px-20 py-2 text-sm font-semibold text-white bg-red-500 border rounded-md hover:bg-red-400"
-                >
+            <button
+                type="button"
+                onClick={handleDelete}
+                className="px-20 py-2 text-sm font-semibold text-white bg-red-500 border rounded-md hover:bg-red-400"
+            >
                 Delete Movie
-                </button>
-                <button 
-                  className="px-20 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
-                >
+            </button>
+            <button
+                type="submit"
+                className="px-20 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
+            >
                 Update Movie
-                </button>
-            </div>
+            </button>
+          </div>
         </form>
       </div>
     </div>

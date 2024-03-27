@@ -1,18 +1,44 @@
 import {useState} from "react"
+import { doc, updateDoc, deleteDoc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig';
 
-function EditPromotion({isOpen, onClose, promoToEdit}) {
+const EditPromotion = ({isOpen, onClose, promoToEdit}) => {
+
+    const id = promoToEdit.id;
 
     const [name, setName] = useState(promoToEdit.name)
-    const [id, setId] = useState(promoToEdit.id)
+    const [ein, setEIN] = useState(promoToEdit.ein)
     const [percent, setPercent] = useState(promoToEdit.percent)
     const [expiration, setExpiration] = useState(promoToEdit.expiration)
     const [validMovie, setValidMovie] = useState(promoToEdit.validMovie)
 
-    const handleSubmit = (event) => {
+    const handleUpdate = async (event) => {
         event.preventDefault();
-        //Add movie info update function
+        
+        // New promotion object with updated fields
+        const updatedPromo = {
+            id,
+            name,
+            ein,
+            percent,
+            expiration,
+            validMovie
+        }
+
+
+        // Update the document in Firestore
+        await updateDoc(doc(db, "promotions", id), updatedPromo);
         onClose()
-    }
+    };
+
+    // Function to handle promotion deletion
+    const handleDelete = async () => {
+        // Delete the document in Firestore
+        await deleteDoc(doc(db, "promotions", id));
+        onClose();
+    };
+
+
 
 
     if (!isOpen || !promoToEdit) return null;
@@ -20,7 +46,7 @@ function EditPromotion({isOpen, onClose, promoToEdit}) {
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center" onClick={onClose}>
         <div className="relative top-8 bottom-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white" onClick={e => e.stopPropagation()}>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleUpdate} className="space-y-4">
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">Name:</label>
             <input
@@ -36,9 +62,9 @@ function EditPromotion({isOpen, onClose, promoToEdit}) {
             <input
               id="phone"
               type="text"
-              value={id}
+              value={ein}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              onChange={(e) => setId(e.target.value)}
+              onChange={(e) => setEIN(e.target.value)}
             />
           </div>
           <div>
@@ -72,7 +98,8 @@ function EditPromotion({isOpen, onClose, promoToEdit}) {
             />
           </div>
           <div className="flex flex-row mt-10 space-x-4 justify-center">
-                <button 
+                <button
+                  onClick={handleDelete}
                   className="px-20 py-2 text-sm font-semibold text-white bg-red-500 border rounded-md hover:bg-red-400"
                 >
                 Delete Promotion

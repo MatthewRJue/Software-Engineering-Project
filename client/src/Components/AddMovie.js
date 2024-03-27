@@ -1,6 +1,8 @@
 import {useState} from "react"
+import { doc, collection, addDoc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig';
 
-function AddMovie({isOpen, onClose}) {
+const AddMovie = ({isOpen, onClose}) => {
 
     const [name, setName] = useState("");
     const [genre, setGenre] = useState("");
@@ -16,15 +18,36 @@ function AddMovie({isOpen, onClose}) {
     const [synopsis, setSynopsis] = useState("");
 
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        //Add movie info post function
+        // Add a new document with a generated id.
+        try {
+        await addDoc(collection(db, "movies"), { ...newMovie });
+        } catch (error) {
+          console.log(error + "Error adding document");
+        }
         onClose()
     }
 
    
     if (!isOpen) return null;
    
+    const newMovie = {
+        id: doc.id,
+        name,
+        genre,
+        rating,
+        imageURL,
+        runtime,
+        review,
+        director,
+        producer,
+        cast,
+        category,
+        embedID,
+        synopsis
+    }
+
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center" onClick={onClose}>
         <div className="relative top-52 bottom-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white" onClick={e => e.stopPropagation()}>
