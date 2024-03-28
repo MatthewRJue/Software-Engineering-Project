@@ -49,6 +49,7 @@ function App() {
         setMovies(moviesData);
         // Set displayedMovies after movies has been initialized
         setDisplayedMovies(moviesData);
+        console.log(moviesData)
       } catch (error) {
         console.error('Error fetching movies: ', error);
       }
