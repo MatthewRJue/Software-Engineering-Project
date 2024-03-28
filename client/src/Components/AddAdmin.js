@@ -23,7 +23,6 @@ function AddAdmin({isOpen, onClose}) {
     if (!isOpen) return null;
 
     const newAdmin = {
-        id:doc.id,
         name,
         email,
         phone

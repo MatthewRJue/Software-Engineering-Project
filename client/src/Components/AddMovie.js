@@ -34,7 +34,6 @@ const AddMovie = ({isOpen, onClose}) => {
     if (!isOpen) return null;
    
     const newMovie = {
-        id: doc.id,
         name,
         genre,
         rating,
