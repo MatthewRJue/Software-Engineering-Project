@@ -20,6 +20,7 @@ const AddMovie = ({isOpen, onClose}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log(newMovie)
         // Add a new document with a generated id.
         try {
         await addDoc(collection(db, "movies"), { ...newMovie });
@@ -47,7 +48,7 @@ const AddMovie = ({isOpen, onClose}) => {
         embedID,
         synopsis
     }
-
+    
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center" onClick={onClose}>
         <div className="relative top-52 bottom-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white" onClick={e => e.stopPropagation()}>

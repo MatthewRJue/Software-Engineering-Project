@@ -5,7 +5,7 @@ const MovieInfo = ({ isOpen, onClose, movie }) => {
   if (!isOpen || !movie) return null;
 
   // Destructure movie details for easy access
-  const { name, genre, mpaarating, director, producer, cast, synopsis, runtime, category, review, embedId } = movie;
+  const { name, genre, mpaarating, director, producer, cast, synopsis, runtime, category, review, embedID } = movie;
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" onClick={onClose}> {/* Modal Overlay */}
@@ -57,7 +57,7 @@ const MovieInfo = ({ isOpen, onClose, movie }) => {
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{synopsis}</dd>
               </div>
               <div className="flex justify-center mr-5">
-                <TrailerPreview embedId={embedId} />
+                <TrailerPreview embedId={embedID} />
               </div>
             </dl>
           </div>
