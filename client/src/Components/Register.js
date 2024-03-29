@@ -24,7 +24,7 @@ export default function Register() {
     };
 
     try {
-      await addDoc(collection(db, "users"), newUser);
+      await addDoc(collection(db, "accounts"), newUser);
       alert("User registered successfully!");
       navigate('/registration-confirmation', { state: { email } });
     } catch (error) {
