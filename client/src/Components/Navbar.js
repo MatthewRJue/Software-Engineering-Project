@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
-export default function Navbar({status, updateAdminTab}) {
+export default function Navbar({status, updateAdminTab, onLogout}) {
 
   const handleUserClick = () => {
     updateAdminTab("ManageUsers")
@@ -65,9 +65,9 @@ export default function Navbar({status, updateAdminTab}) {
       { (status==="User" || status==="Admin") &&
       <div className="mt-0 flex lg:ml-4 lg:mt-0">
         <span className="sm:ml-3">
-          <Link to="/" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          <button onClick={onLogout} className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             Logout
-          </Link>
+          </button>
         </span>
         <span className="sm:ml-3">
           <Link to="/profile" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
@@ -78,4 +78,5 @@ export default function Navbar({status, updateAdminTab}) {
     </div>
   )
 }
+
 

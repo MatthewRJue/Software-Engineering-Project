@@ -1,29 +1,46 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { addDoc, collection } from "firebase/firestore"; 
+import { db } from '../firebaseConfig';
 
 export default function Register() {
-  // State to track if the checkbox is checked
   const [showBillingAddress, setShowBillingAddress] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
-  // Function to determine if the border should be green or red for confirmPassword
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    const newUser = {
+      firstName,
+      lastName,
+      phone,
+      email,
+      password,
+    };
+
+    try {
+      await addDoc(collection(db, "users"), newUser);
+      alert("User registered successfully!");
+      navigate('/registration-confirmation', { state: { email } });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("Failed to register user.");
+    }
+  };
+
   const getPasswordInputClassName = () => {
-    if (!confirmPassword) return "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"; // initial class
+    if (!confirmPassword) return "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6";
     return password === confirmPassword ? "block w-full rounded-md border-green-500 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" : "block w-full rounded-md border-red-500 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6";
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Perform registration logic here
-
-    // Navigate to RegistrationConfirmation with email in state
-    navigate('/registration-confirmation', { state: { email } });
-  };
-
-  // Function to render the address form
   const renderAddressForm = (isBillingAddress = false) => (
     <div className="border-b border-gray-900/10 pb-12">
       <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -37,7 +54,7 @@ export default function Register() {
         </label>
         <div className="mt-2">
           <select
-            id="country"
+            id="billCountry"
             name="country"
             autoComplete="country-name"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
@@ -236,10 +253,8 @@ export default function Register() {
                   </div>
                 </div>
 
-                {/* Render the first address form */}
                 {renderAddressForm()}
 
-                {/* Checkbox to toggle second address form */}
                 <div className="mt-6">
                   <label htmlFor="billing-address" className="flex items-center text-sm">
                     <input
@@ -254,7 +269,6 @@ export default function Register() {
                   </label>
                 </div>
 
-                {/* Conditionally render the second address form */}
                 {showBillingAddress && renderAddressForm(true)}
 
                 <div className="border-b border-gray-900/10 pb-12">

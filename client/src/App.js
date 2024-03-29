@@ -34,7 +34,7 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [searchFilter, setSearchFilter] = useState("");
   const [displayedMovies, setDisplayedMovies] = useState([]);
-  const [userStatus, setUserStatus] = useState("Admin");
+  const [userStatus, setUserStatus] = useState(localStorage.getItem('userStatus') || "Web");
   const [adminTab, setAdminTab] = useState("ManageMovies");
   const [movies, setMovies] = useState([]);
   const [accounts, setAccounts] = useState([]);
@@ -108,24 +108,34 @@ function App() {
     setAdminTab(tab)
   }
 
-  const handleLoginAttempt = (email, password) => {
-    setUserStatus("Web")
-    for(const account in accounts){
+  const handleLoginAttempt = async (email, password) => {
+    let userFound = false;
+    for(const account of accounts){
       if(account.email === email && account.password === password){
-        setUserStatus(account.status)
-        console.log(account.status)
+        setUserStatus(account.status);
+        localStorage.setItem('userStatus', account.status); // Save to localStorage
+        userFound = true;
+        console.log(account.status);
+        break; // Exit the loop once the user is found
       }
+    }
+    if (!userFound) {
+      console.log("User not found or incorrect password");
+      // Handle login failure
     }
   }
 
- 
+  const handleLogout = () => {
+    setUserStatus("Web");
+    localStorage.removeItem('userStatus');
+  };
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={
           <>
-            <Navbar status={userStatus} updateAdminTab={handleAdminTab}/>
+            <Navbar status={userStatus} updateAdminTab={handleAdminTab} onLogout={handleLogout}/>
             <Searchbar setSearchFilter={handleSearchChange} setCategoryFilter={handleCategoryChange}/>
             {userStatus === "Admin" && adminTab === "ManageMovies" && <ManageMovies movieList={displayedMovies}/>}
             {userStatus === "Admin" && adminTab === "ManageUsers" && <ManageUsers userList={accounts} />}
