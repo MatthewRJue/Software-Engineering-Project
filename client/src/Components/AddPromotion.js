@@ -25,7 +25,6 @@ function AddPromotion({isOpen, onClose}) {
     if (!isOpen) return null;
    
     const newPromotion = {
-        id:doc.id,
         name,
         ein,
         percent,

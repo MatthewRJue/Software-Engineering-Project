@@ -34,7 +34,7 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [searchFilter, setSearchFilter] = useState("");
   const [displayedMovies, setDisplayedMovies] = useState([]);
-  const [userStatus, setUserStatus] = useState("User");
+  const [userStatus, setUserStatus] = useState("Admin");
   const [adminTab, setAdminTab] = useState("ManageMovies");
   const [movies, setMovies] = useState([]);
   const [accounts, setAccounts] = useState([]);
