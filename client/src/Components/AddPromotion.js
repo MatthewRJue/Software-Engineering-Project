@@ -15,6 +15,7 @@ function AddPromotion({isOpen, onClose}) {
         // Add a new document with a generated id.
         try {
         await addDoc(collection(db, "promotions"), { ...newPromotion });
+        window.location.reload(); // Refresh the page
         } catch (error) {
           console.log(error + "Error adding document");
         }

@@ -28,6 +28,7 @@ const EditPromotion = ({isOpen, onClose, promoToEdit}) => {
 
         // Update the document in Firestore
         await updateDoc(doc(db, "promotions", id), updatedPromo);
+        window.location.reload(); // Refresh the page
         onClose()
     };
 
@@ -35,6 +36,7 @@ const EditPromotion = ({isOpen, onClose, promoToEdit}) => {
     const handleDelete = async () => {
         // Delete the document in Firestore
         await deleteDoc(doc(db, "promotions", id));
+        window.location.reload(); // Refresh the page
         onClose();
     };
 

@@ -27,6 +27,7 @@ const EditUser = ({isOpen, onClose, userToEdit}) => {
 
         // Update the document in Firestore
         await updateDoc(doc(db, "accounts", id), updatedUser);
+        window.location.reload(); // Refresh the page
         onClose();
     };
 
@@ -34,6 +35,7 @@ const EditUser = ({isOpen, onClose, userToEdit}) => {
     const handleDelete = async () => {
         // Delete the document in Firestore
         await deleteDoc(doc(db, "accounts", id));
+        window.location.reload(); // Refresh the page
         onClose();
     };
 

@@ -41,6 +41,7 @@ const EditMovie = ({isOpen, onClose, movieToEdit}) => {
     
       // Update the document in Firestore
       await updateDoc(doc(db, "movies", id), updatedMovie);
+      window.location.reload(); // Refresh the page
       onClose();
     };
     
@@ -49,6 +50,7 @@ const EditMovie = ({isOpen, onClose, movieToEdit}) => {
     const handleDelete = async () => {
       // Delete the document in Firestore
       await deleteDoc(doc(db, "movies", id));
+      window.location.reload(); // Refresh the page
       onClose();
     };
 
