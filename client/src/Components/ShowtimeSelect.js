@@ -41,7 +41,7 @@ export default function ShowtimeSelect() {
                 <div className="flex flex-col items-center h-200">
                 {movie && (
                         <div className="text-center mt-16">
-                        <img src={movie.imageUrl} alt={movie.name} className="w-60 h-auto mx-auto" />
+                        <img src={movie.imageURL} alt={movie.name} className="w-60 h-auto mx-auto" />
                         <h2 className="mt-4 text-xl font-semibold">Select Showtime for {movie.name}</h2>
                         </div>
                 )}
