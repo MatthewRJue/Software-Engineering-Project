@@ -8,10 +8,37 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [billCity, setBillCity] = useState('');
+  const [billCountry, setBillCountry] = useState('United States');
+  const [billState, setBillState] = useState('');
+  const [billStreet, setBillStreet] = useState('');
+  const [billZip, setBillZip] = useState('');
+  const [cardName, setCardName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardType, setCardType] = useState('Mastercard');
+  const [expDate, setExpDate] = useState('');
+  const [cvv, setcvv] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('United States');
+  const [state, setState] = useState('');
+  const [street, setStreet] = useState('');
+  const [zip, setZip] = useState('');
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if(!showBillingAddress){
+      setBillCity(city)
+      setBillCountry(country)
+      setBillState(state)
+      setBillStreet(street)
+      setBillZip(zip)
+    }
 
     if (password !== confirmPassword) {
       alert("Passwords do not match.");
@@ -21,6 +48,24 @@ export default function Register() {
     const newUser = {
       email,
       password,
+      firstName,
+      lastName,
+      phone,
+      street,
+      city,
+      state,
+      country,
+      zip,
+      billStreet,
+      billCity,
+      billState,
+      billCountry,
+      billZip,
+      cardName,
+      cardNumber,
+      cardType,
+      expDate,
+      cvv,
     };
 
     try {
@@ -38,10 +83,10 @@ export default function Register() {
     return password === confirmPassword ? "block w-full rounded-md border-green-500 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" : "block w-full rounded-md border-red-500 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6";
   };
 
-  const renderAddressForm = (isBillingAddress = false) => (
+  const renderAddressForm = () => (
     <div className="border-b border-gray-900/10 pb-12">
       <h2 className="text-base font-semibold leading-7 text-gray-900">
-        {isBillingAddress ? "Billing Address" : "Address"}
+        {"Address"}
       </h2>
       <p className="mt-1 text-xs font-light leading-6 text-gray-900">Not Required</p>
 
@@ -55,6 +100,7 @@ export default function Register() {
             name="country"
             autoComplete="country-name"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+            onChange={(e) => setCountry(e.target.value)}
           >
             <option>United States</option>
             <option>Canada</option>
@@ -74,6 +120,7 @@ export default function Register() {
             id="street-address"
             autoComplete="street-address"
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            onChange={(e) => setStreet(e.target.value)}
           />
         </div>
       </div>
@@ -90,6 +137,7 @@ export default function Register() {
               id="city"
               autoComplete="address-level2"
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              onChange={(e) => setCity(e.target.value)}
             />
           </div>
         </div>
@@ -105,6 +153,7 @@ export default function Register() {
               id="region"
               autoComplete="address-level1"
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              onChange={(e) => setState(e.target.value)}
             />
           </div>
         </div>
@@ -120,6 +169,101 @@ export default function Register() {
               id="postal-code"
               autoComplete="postal-code"
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              onChange={(e) => setZip(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderBillingAddressForm = () => (
+    <div className="border-b border-gray-900/10 pb-12">
+      <h2 className="text-base font-semibold leading-7 text-gray-900">
+        {"Billing Address"}
+      </h2>
+      <p className="mt-1 text-xs font-light leading-6 text-gray-900">Not Required</p>
+
+      <div className="mt-10 sm:col-span-3">
+        <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+          Country
+        </label>
+        <div className="mt-2">
+          <select
+            id="billCountry"
+            name="country"
+            autoComplete="country-name"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+            onChange={(e) => setBillCountry(e.target.value)}
+          >
+            <option>United States</option>
+            <option>Canada</option>
+            <option>Mexico</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="mt-10 col-span-full">
+        <label htmlFor="street-address" className="block text-sm font-medium leading-6 text-gray-900">
+          Street Address
+        </label>
+        <div className="mt-2">
+          <input
+            type="text"
+            name="street-address"
+            id="street-address"
+            autoComplete="street-address"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            onChange={(e) => setBillStreet(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-6 gap-6 mt-10">
+        <div className="col-span-2">
+          <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
+            City
+          </label>
+          <div className="mt-2">
+            <input
+              type="text"
+              name="city"
+              id="city"
+              autoComplete="address-level2"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              onChange={(e) => setBillCity(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="col-span-2">
+          <label htmlFor="region" className="block text-sm font-medium leading-6 text-gray-900">
+            State / Province
+          </label>
+          <div className="mt-2">
+            <input
+              type="text"
+              name="region"
+              id="region"
+              autoComplete="address-level1"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              onChange={(e) => setBillState(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="col-span-2">
+          <label htmlFor="postal-code" className="block text-sm font-medium leading-6 text-gray-900">
+            ZIP / Postal code
+          </label>
+          <div className="mt-2">
+            <input
+              type="text"
+              name="postal-code"
+              id="postal-code"
+              autoComplete="postal-code"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              onChange={(e) => setBillZip(e.target.value)}
             />
           </div>
         </div>
@@ -154,6 +298,7 @@ export default function Register() {
                           id="first-name"
                           autoComplete="given-name"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={(e) => setFirstName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -169,6 +314,7 @@ export default function Register() {
                           id="last-name"
                           autoComplete="family-name"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={(e) => setLastName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -184,6 +330,7 @@ export default function Register() {
                           type="phone"
                           autoComplete="phone"
                           className="block w-5/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={(e) => setPhone(e.target.value)}
                         />
                       </div>
                     </div>
@@ -266,7 +413,7 @@ export default function Register() {
                   </label>
                 </div>
 
-                {showBillingAddress && renderAddressForm(true)}
+                {showBillingAddress && renderBillingAddressForm()}
 
                 <div className="border-b border-gray-900/10 pb-12">
                   <h2 className="text-base font-semibold leading-7 text-gray-900">Card Information</h2>
@@ -281,18 +428,21 @@ export default function Register() {
                         id="card-type" 
                         name="card-type"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                        onChange={(e) => setCardType(e.target.value)}
                       >
-                        <option>Mastercard</option>
-                        <option>VISA</option>
-                        <option>American Express</option>
-                        <option>Discover</option>
+                        <option value={"Mastercard"}>Mastercard</option>
+                        <option value={"VISA"}>VISA</option>
+                        <option value={"American Express"}>American Express</option>
+                        <option value={"Discover"}>Discover</option>
                       </select>
                     </div>
                   </div>
 
                   <div>
                     <label htmlFor="cardName" className="block text-sm font-medium mt-10 text-gray-700">Name on Card</label>
-                    <input type="text" id="cardName" name="cardName" required className="mt-1 block w-8/12 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
+                    <input 
+                    onChange={(e) => setCardName(e.target.value)}
+                    type="text" id="cardName" name="cardName" required className="mt-1 block w-8/12 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"/>
                   </div>
 
                   <div className="mt-10 col-span-full">
@@ -305,6 +455,7 @@ export default function Register() {
                         name="card-number"
                         id="card-number"
                         className="block w-8/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        onChange={(e) => setCardNumber(e.target.value)}
                       />
                     </div>
                   </div>
@@ -321,6 +472,7 @@ export default function Register() {
                           id="expiration-date"
                           placeholder="MM/YY"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={(e) => setExpDate(e.target.value)}
                         />
                       </div>
                     </div>
@@ -335,6 +487,7 @@ export default function Register() {
                           name="cvv"
                           id="cvv"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={(e) => setcvv(e.target.value)}
                         />
                       </div>
                     </div>
