@@ -19,9 +19,6 @@ export default function Register() {
     }
 
     const newUser = {
-      firstName,
-      lastName,
-      phone,
       email,
       password,
     };
