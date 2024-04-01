@@ -53,9 +53,9 @@ function Login({handleLogin}) {
                     Password
                   </label>
                   <div className="text-sm">
-                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Forgot password?
-                    </a>
+                    <Link to="/login/forgotpassword" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                      Forgot Password
+                    </Link>
                   </div>
                 </div>
                 <div className="mt-2">

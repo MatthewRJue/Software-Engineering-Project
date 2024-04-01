@@ -22,6 +22,8 @@ import Profile from './Components/Profile';
 import {collection, getDocs } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 import './firebaseConfig'; // Add this line to prevent firebase not loading error
+import ForgotPassword from './Components/ForgotPassword';
+import ForgotPasswordEmail from './Components/ForgotPasswordEmail';
 
 const prices = {
   child: "5.00",
@@ -146,6 +148,8 @@ function App() {
           </>
         } />
         <Route path="/login" element={<Login handleLogin={handleLoginAttempt}/>} />
+        <Route path="/login/forgotpassword" element={<ForgotPasswordEmail/>} />
+        <Route path="/login/forgotpassword/newpassword" element={<ForgotPassword/>} />
         <Route path="/register" element={<Register />} />
         <Route path="/registration-confirmation" element={<RegistrationConfirmation />} />
         <Route path="/select-showtime" element={<ShowtimeSelect />}/>
