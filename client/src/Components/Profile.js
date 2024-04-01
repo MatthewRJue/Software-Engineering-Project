@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
-import { doc, getDoc, updateDoc } from "firebase/firestore"; 
+import { doc, getDoc, updateDoc, collection, addDoc, query, deleteDoc, getDocs } from "firebase/firestore"; 
 import { db } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 
@@ -40,6 +40,13 @@ export default function Profile() {
         } else {
           console.log("No such document!");
         }
+
+        // Fetch user's cards
+        const cardsRef = collection(db, "accounts", userId, "paymentCard");
+        const q = query(cardsRef);
+        const querySnapshot = await getDocs(q);
+        const userCards = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setCreditCards(userCards);
       }
     };
 
@@ -58,16 +65,30 @@ export default function Profile() {
     setCreditCards(newCreditCards);
   };
 
-  const addCreditCard = () => {
+  const addCreditCard = async () => {
     if (creditCards.length < 3) {
-      setCreditCards([...creditCards, { cardType: '', cardName: '', cardNumber: '', expirationDate: '', cvv: '' }]);
+      const newCard = { cardType: '', cardName: '', cardNumber: '', expirationDate: '', cvv: '' };
+      const userId = sessionStorage.getItem('userId');
+      if (userId) {
+        await addDoc(collection(db, "accounts", userId, "paymentCard"), newCard);
+        const cardsRef = collection(db, "accounts", userId, "paymentCard");
+        const q = query(cardsRef);
+        const querySnapshot = await getDocs(q);
+        const userCards = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setCreditCards(userCards);
+      }
     }
   };
 
-  const removeCreditCard = (index) => {
-    const newCreditCards = [...creditCards];
-    newCreditCards.splice(index, 1);
-    setCreditCards(newCreditCards);
+  const removeCreditCard = async (index) => {
+    const cardId = creditCards[index].id;
+    const userId = sessionStorage.getItem('userId');
+    if (userId && cardId) {
+      await deleteDoc(doc(db, "accounts", userId, "paymentCard", cardId));
+      const updatedCards = [...creditCards];
+      updatedCards.splice(index, 1);
+      setCreditCards(updatedCards);
+    }
   };
 
   const renderCardInformationForms = () => creditCards.map((card, index) => (
@@ -290,7 +311,7 @@ export default function Profile() {
                 <button onClick={handleUpdateUserInfo} className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded">
                   Update Profile
                 </button>
-                <button onClick={() => navigate(-1)} className="mt-4 ml-4 px-4 py-2 text-indigo-600 border border-indigo-600 rounded hover:text-indigo-400 hover:border-indigo-400">
+                <button onClick={() => navigate('/')} className="mt-4 ml-4 px-4 py-2 text-indigo-600 border border-indigo-600 rounded hover:text-indigo-400 hover:border-indigo-400">
                   Return Home
                 </button>
               </div>
