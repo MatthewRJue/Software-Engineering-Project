@@ -114,6 +114,7 @@ function App() {
       if(account.email === email && account.password === password){
         setUserStatus(account.status);
         localStorage.setItem('userStatus', account.status); // Save to localStorage
+        sessionStorage.setItem('userId', account.id); // Save user document ID to session storage
         userFound = true;
         console.log(account.status);
         break; // Exit the loop once the user is found

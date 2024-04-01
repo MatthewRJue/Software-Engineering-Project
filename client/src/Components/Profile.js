@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
+import { doc, getDoc, updateDoc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig';
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
+
+  const navigate = useNavigate();
+  
   const [activeTab, setActiveTab] = useState('info'); // 'info', 'history', or 'billing'
   const [userInfo, setUserInfo] = useState({
-    firstName: 'John',
-    lastName: 'Doe',
-    phone: '123-456-7890',
-    email: 'john.doe@example.com',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
     country: '',
-    streetAddress: '',
+    street: '',
     city: '',
-    region: '',
-    postalCode: '',
+    state: '',
+    zip: '',
   });
   const [creditCards, setCreditCards] = useState([
     { cardType: '', cardName: '', cardNumber: '', expirationDate: '', cvv: '' },
@@ -21,6 +27,24 @@ export default function Profile() {
     { id: 1, item: 'Ticket A', date: '2023-01-01' },
     { id: 2, item: 'Ticket B', date: '2023-02-01' },
   ]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = sessionStorage.getItem('userId');
+      if (userId) {
+        const docRef = doc(db, "accounts", userId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setUserInfo(docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleUserInfoChange = (e) => {
     const { name, value } = e.target;
@@ -121,11 +145,27 @@ export default function Profile() {
     </div>
   ));
 
+  const handleUpdateUserInfo = async () => {
+    const userId = sessionStorage.getItem('userId');
+    if (userId && userInfo) {
+      const docRef = doc(db, "accounts", userId); // Direct reference to the document
+      await updateDoc(docRef, {
+        ...userInfo // Spread the userInfo state to update all fields
+      }).catch((error) => {
+        console.error("Error updating document: ", error);
+        alert("Failed to update profile.");
+      });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Updated User Info:', userInfo);
-    console.log('Credit Cards:', creditCards);
+    handleUpdateUserInfo();
   };
+
+  if (!userInfo) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -183,6 +223,7 @@ export default function Profile() {
                     id="email"
                     name="email"
                     value={userInfo.email}
+                    onChange={handleUserInfoChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
@@ -206,9 +247,9 @@ export default function Profile() {
                   <label htmlFor="streetAddress" className="block text-sm font-medium leading-6 text-gray-900">Street Address</label>
                   <input
                     type="text"
-                    id="streetAddress"
-                    name="streetAddress"
-                    value={userInfo.streetAddress}
+                    id="street"
+                    name="street"
+                    value={userInfo.street}
                     onChange={handleUserInfoChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
@@ -225,28 +266,33 @@ export default function Profile() {
                   />
                 </div>
                 <div className="mt-4">
-                  <label htmlFor="region" className="block text-sm font-medium leading-6 text-gray-900">State / Province</label>
+                  <label htmlFor="state" className="block text-sm font-medium leading-6 text-gray-900">State / Province</label>
                   <input
                     type="text"
-                    id="region"
-                    name="region"
-                    value={userInfo.region}
+                    id="state"
+                    name="state"
+                    value={userInfo.state}
                     onChange={handleUserInfoChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
                 <div className="mt-4">
-                  <label htmlFor="postalCode" className="block text-sm font-medium leading-6 text-gray-900">ZIP / Postal code</label>
+                  <label htmlFor="zip" className="block text-sm font-medium leading-6 text-gray-900">ZIP / Postal code</label>
                   <input
                     type="text"
-                    id="postalCode"
-                    name="postalCode"
-                    value={userInfo.postalCode}
+                    id="zip"
+                    name="zip"
+                    value={userInfo.zip}
                     onChange={handleUserInfoChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
-                <button type="submit" className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded">Update Information</button>
+                <button onClick={handleUpdateUserInfo} className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded">
+                  Update Profile
+                </button>
+                <button onClick={() => navigate(-1)} className="mt-4 ml-4 px-4 py-2 text-indigo-600 border border-indigo-600 rounded hover:text-indigo-400 hover:border-indigo-400">
+                  Return Home
+                </button>
               </div>
             </form>
           )}
