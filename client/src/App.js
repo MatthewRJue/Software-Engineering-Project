@@ -113,36 +113,33 @@ function App() {
   }
 
   const handleLoginAttempt = async (email, password) => {
-    
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      console.log(user);
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
-    });
-    
-    let userFound = false;
-    for(const account of accounts){
-      if(account.email === email && account.password === password){
-        setUserStatus(account.status);
-        localStorage.setItem('userStatus', account.status); // Save to localStorage
-        sessionStorage.setItem('userId', account.id); // Save user document ID to session storage
-        userFound = true;
-        console.log(account.status);
-        break; // Exit the loop once the user is found
-      }
-    }
-    if (!userFound) {
-      console.log("User not found or incorrect password");
-      // Handle login failure
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+
+        // Add your logic after successful sign-in here
+        setUserStatus("User");
+        localStorage.setItem('userStatus', "User"); // Save to localStorage
+
+        // Optionally, you can save the user's ID to sessionStorage
+        sessionStorage.setItem('userId', user.uid); 
+
+    } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        // Handle sign-in error
+        if (errorCode === "auth/user-not-found" || errorCode === "auth/wrong-password") {
+            console.log("User not found or incorrect password");
+            // Handle login failure
+        } else {
+            // Handle other authentication errors
+        }
     }
   }
+
 
   const handleLogout = () => {
 

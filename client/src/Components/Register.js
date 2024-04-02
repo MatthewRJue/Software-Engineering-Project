@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addDoc, collection } from "firebase/firestore"; 
+import { doc, setDoc} from "firebase/firestore"; 
 import { db } from '../firebaseConfig';
 import {auth} from "../firebaseConfig"
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
@@ -35,71 +35,61 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      
-      sendEmailVerification(auth.currentUser);
-      
-      // Signed up 
-      const user = userCredential.user;
-      console.log(user)
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage)
-      // ..
-    });
-
-    if(!showBillingAddress){
-      setBillCity(city)
-      setBillCountry(country)
-      setBillState(state)
-      setBillStreet(street)
-      setBillZip(zip)
-    }
-
-    if (password !== confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
-
-    const newUser = {
-      email,
-      password,
-      firstName,
-      lastName,
-      phone,
-      street,
-      city,
-      state,
-      country,
-      zip,
-      billStreet,
-      billCity,
-      billState,
-      billCountry,
-      billZip,
-      cardName,
-      cardNumber,
-      cardType,
-      expDate,
-      cvv,
-      promotions,
-      status: "User",
-    };
-
+  
     try {
-      await addDoc(collection(db, "accounts"), newUser);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      sendEmailVerification(user);
+      
+      // Get the UID of the authenticated user
+      const uid = user.uid;
+  
+      if (!showBillingAddress) {
+        setBillCity(city);
+        setBillCountry(country);
+        setBillState(state);
+        setBillStreet(street);
+        setBillZip(zip);
+      }
+  
+      if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+  
+      const newUser = {
+        email,
+        firstName,
+        lastName,
+        phone,
+        street,
+        city,
+        state,
+        country,
+        zip,
+        billStreet,
+        billCity,
+        billState,
+        billCountry,
+        billZip,
+        cardName,
+        cardNumber,
+        cardType,
+        expDate,
+        cvv,
+        promotions,
+        status: "User",
+      };
+  
+      // Add user document to Firestore with UID as document ID
+      await setDoc(doc(db, "accounts", uid), newUser);
       alert("User registered successfully!");
       navigate('/registration-confirmation', { state: { email } });
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error("Error registering user: ", error);
       alert("Failed to register user.");
     }
-  };
+  };  
 
   const getPasswordInputClassName = () => {
     if (!confirmPassword) return "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6";
