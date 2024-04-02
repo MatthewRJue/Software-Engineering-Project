@@ -19,6 +19,7 @@ export default function Profile() {
     city: '',
     state: '',
     zip: '',
+    promotions: false,
   });
   const [creditCards, setCreditCards] = useState([
     { cardType: '', cardName: '', cardNumber: '', expirationDate: '', cvv: '' },
@@ -55,7 +56,11 @@ export default function Profile() {
 
   const handleUserInfoChange = (e) => {
     const { name, value } = e.target;
-    setUserInfo((prev) => ({ ...prev, [name]: value }));
+    if (name === "promotions") {
+      setUserInfo((prev) => ({ ...prev, [name]: e.target.checked }));
+    } else {
+      setUserInfo((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleCreditCardChange = (index, e) => {
@@ -307,6 +312,15 @@ export default function Profile() {
                     onChange={handleUserInfoChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
+                </div>
+                <div className="mt-4">
+                  <label>
+                    <input type="checkbox" 
+                    checked={userInfo.promotions}
+                    onChange={handleUserInfoChange}
+                    name="promotions"/>
+                      Sign Up for Promotions
+                  </label>
                 </div>
                 <button onClick={handleUpdateUserInfo} className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded">
                   Update Profile

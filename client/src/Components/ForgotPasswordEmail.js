@@ -18,11 +18,11 @@ function ForgotPasswordEmail() {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.error("Error registering user: ", errorCode, errorMessage);
+      console.error("Error sending password reset email: ", errorCode, errorMessage);
       alert("Failed to send password reset email.");
     });
 
-    navigate("/login/forgotpassword/newpassword")
+    navigate("/login")
   }
 
   return (
