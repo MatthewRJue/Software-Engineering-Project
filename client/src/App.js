@@ -19,7 +19,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ManageUsers from './Components/ManageUsers';
 import ManagePromotions from './Components/ManagePromotions';
 import Profile from './Components/Profile';
-import {collection, getDocs } from 'firebase/firestore';
+import {collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from './firebaseConfig';
 import './firebaseConfig'; // Add this line to prevent firebase not loading error
 import ForgotPassword from './Components/ForgotPassword';
@@ -115,28 +115,23 @@ function App() {
   const handleLoginAttempt = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        // Signed in 
         const user = userCredential.user;
         console.log(user);
 
-        // Add your logic after successful sign-in here
-        setUserStatus("User");
-        localStorage.setItem('userStatus', "User"); // Save to localStorage
-
-        // Optionally, you can save the user's ID to sessionStorage
-        sessionStorage.setItem('userId', user.uid); 
-
-    } catch (error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        // Handle sign-in error
-        if (errorCode === "auth/user-not-found" || errorCode === "auth/wrong-password") {
-            console.log("User not found or incorrect password");
-            // Handle login failure
+        // Fetch user status from Firestore
+        const docRef = doc(db, "accounts", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            setUserStatus(userData.status); // Assuming 'status' field exists and contains 'User' or 'Admin'
+            localStorage.setItem('userStatus', userData.status); // Update localStorage with the latest status
         } else {
-            // Handle other authentication errors
+            console.log("No such document!");
         }
+
+        sessionStorage.setItem('userId', user.uid); 
+    } catch (error) {
+        console.error("Error during login: ", error);
     }
   }
 
