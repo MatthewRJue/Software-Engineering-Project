@@ -1,12 +1,27 @@
 import { Link } from 'react-router-dom'; // Add this import at the top
 import {useState} from "react"
 import { useNavigate } from 'react-router-dom';
+import {auth} from "../firebaseConfig"
+import { sendPasswordResetEmail} from "firebase/auth";
 
 function ForgotPasswordEmail() {
 
   const [email, setEmail] = useState("")
   const navigate = useNavigate()
   const handleSubmit = () => {
+
+    sendPasswordResetEmail(auth, email)
+    .then(() => {
+      // Password reset email sent!
+      // ..
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Error registering user: ", errorCode, errorMessage);
+      alert("Failed to send password reset email.");
+    });
+
     navigate("/login/forgotpassword/newpassword")
   }
 
