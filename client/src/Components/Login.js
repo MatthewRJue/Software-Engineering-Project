@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom'; // Add this import at the top
 import {useState} from "react"
 import { useNavigate } from 'react-router-dom';
+import {auth} from "../firebaseConfig"
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 function Login({handleLogin}) {
 
   const [currentEmail, setCurrentEmail] = useState("")
   const [currentPassword, setCurrentPassword] = useState("")
   const navigate = useNavigate()
+  
   const handleSubmit = () => {
     console.log("in Login")
     handleLogin(currentEmail, currentPassword)

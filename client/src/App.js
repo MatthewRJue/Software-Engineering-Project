@@ -24,6 +24,8 @@ import { db } from './firebaseConfig';
 import './firebaseConfig'; // Add this line to prevent firebase not loading error
 import ForgotPassword from './Components/ForgotPassword';
 import ForgotPasswordEmail from './Components/ForgotPasswordEmail';
+import { auth } from "./firebaseConfig"
+import { signOut, signInWithEmailAndPassword } from "firebase/auth";
 
 const prices = {
   child: "5.00",
@@ -111,6 +113,20 @@ function App() {
   }
 
   const handleLoginAttempt = async (email, password) => {
+    
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      console.log(user);
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+    });
+    
     let userFound = false;
     for(const account of accounts){
       if(account.email === email && account.password === password){
@@ -129,6 +145,13 @@ function App() {
   }
 
   const handleLogout = () => {
+
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+
     setUserStatus("Web");
     localStorage.removeItem('userStatus');
   };

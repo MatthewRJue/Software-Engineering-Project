@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 // Your Firebase configuration object obtained from the Firebase Console
 const firebaseConfig = {
@@ -16,5 +17,6 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 // Create a Firestore instance to interact with Firestore database
 const db = getFirestore(firebaseApp);
+const auth = getAuth(firebaseApp);
 
-export { firebaseApp, db };
+export { firebaseApp, db, auth };

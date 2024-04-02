@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addDoc, collection } from "firebase/firestore"; 
 import { db } from '../firebaseConfig';
+import {auth} from "../firebaseConfig"
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+
 
 export default function Register() {
   const [showBillingAddress, setShowBillingAddress] = useState(false);
@@ -32,6 +35,23 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      
+      sendEmailVerification(auth.currentUser);
+      
+      // Signed up 
+      const user = userCredential.user;
+      console.log(user)
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage)
+      // ..
+    });
 
     if(!showBillingAddress){
       setBillCity(city)
