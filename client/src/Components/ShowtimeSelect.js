@@ -1,131 +1,188 @@
-import { Fragment, useState } from 'react'
-import { useLocation } from 'react-router-dom';
-import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import Navbar from './Navbar';
-import { useNavigate } from 'react-router-dom';
+import {useState} from "react"
+import { doc, collection, addDoc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig';
 
-const showtimes= [
-    {
-        id: 1,
-        name: 'Feburary 29th, 7:30 PM',
-    },
-    {
-        id: 2,
-        name: 'March 1st, 6:00 PM',
-    },
-    {
-        id: 3,
-        name: 'March 1st, 8:45 PM',
-    },
-]
+const AddMovie = ({isOpen, onClose}) => {
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
+    const [name, setName] = useState("");
+    const [genre, setGenre] = useState("");
+    const [rating, setRating] = useState("");
+    const [imageURL, setImageURL] = useState("");
+    const [runtime, setRuntime] = useState("");
+    const [review, setReview] = useState("");
+    const [director, setDirector] = useState("");
+    const [producer, setProducer] = useState("");
+    const [cast, setCast] = useState("");
+    const [category, setCategory] = useState("");
+    const [embedID, setEmbedID] = useState("");
+    const [synopsis, setSynopsis] = useState("");
 
-export default function ShowtimeSelect() {
-    const [selected, setSelected] = useState(showtimes[0])
-    const location = useLocation();
-    const movie = location.state?.movie;
-    const navigate = useNavigate();
 
-    // This function now acts as an event handler
-    const handleNextClick = () => {
-        navigate('/select-seats', { state: { movie: movie, selectedShowtime: selected } });
-    };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        console.log(newMovie)
+        // Add a new document with a generated id.
+        try {
+        await addDoc(collection(db, "movies"), { ...newMovie });
+        window.location.reload(); // Refresh the page
+        } catch (error) {
+          console.log(error + "Error adding document");
+        }
+        onClose()
+    }
 
+    if (!isOpen) return null;
+   
+    const newMovie = {
+        name,
+        genre,
+        rating,
+        imageURL,
+        runtime,
+        review,
+        director,
+        producer,
+        cast,
+        category,
+        embedID,
+        synopsis
+    }
+    
     return (
-        <>
-                <Navbar />
-                <div className="flex flex-col items-center h-200">
-                {movie && (
-                        <div className="text-center mt-16">
-                        <img src={movie.imageURL} alt={movie.name} className="w-60 h-auto mx-auto" />
-                        <h2 className="mt-4 text-xl font-semibold">Select Showtime for {movie.name}</h2>
-                        </div>
-                )}
-                <div className="flex items-center justify-center w-11/12">
-                <Listbox value={selected} onChange={setSelected}>
-                        {({ open }) => (
-                        <>
-                                <div className="relative w-1/3 mx-auto mt-10"> 
-                                <Listbox.Button className="relative w-full h-12 cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
-                                        <span className="flex items-center">
-                                        <span className="ml-3 block truncate">{selected.name}</span>
-                                        </span>
-                                        <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                                        <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                                        </span>
-                                </Listbox.Button>
-
-                                <Transition
-                                        show={open}
-                                        as={Fragment}
-                                        leave="transition ease-in duration-100"
-                                        leaveFrom="opacity-100"
-                                        leaveTo="opacity-0"
-                                >
-                                        <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                        {showtimes.map((showtime) => (
-                                                <Listbox.Option
-                                                key={showtime.id}
-                                                className={({ active }) =>
-                                                        classNames(
-                                                        active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                                                        'relative cursor-default select-none py-2 pl-3 pr-9'
-                                                        )
-                                                }
-                                                value={showtime}
-                                                >
-                                                {({ selected, active }) => (
-                                                        <>
-                                                        <div className="flex items-center">
-                                                                <span
-                                                                className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
-                                                                >
-                                                                {showtime.name}
-                                                                </span>
-                                                        </div>
-
-                                                        {selected ? (
-                                                                <span
-                                                                className={classNames(
-                                                                        active ? 'text-white' : 'text-indigo-600',
-                                                                        'absolute inset-y-0 right-0 flex items-center pr-4'
-                                                                )}
-                                                                >
-                                                                <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                                                </span>
-                                                        ) : null}
-                                                        </>
-                                                )}
-                                                </Listbox.Option>
-                                        ))}
-                                        </Listbox.Options>
-                                </Transition>
-                                </div>
-                        </>
-                        )}
-                </Listbox>
-                </div>
-                <div className="flex flex-row mt-10 space-x-4">
-                        <button 
-                                onClick={() => navigate(-1)}
-                                className="px-20 py-2 text-sm font-semibold text-indigo-600 border border-indigo-600 rounded-md hover:text-indigo-400 hover:border-indigo-400"
-                        >
-                        Cancel
-                        </button>
-                        <button 
-                                className="px-20 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
-                                onClick={() => handleNextClick(movie)}
-                        >
-                         Next
-                        </button>
-                </div>
-                <div>
-                </div>
-                </div>
-        </>
-    )
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full flex justify-center items-center" onClick={onClose}>
+        <div className="relative top-52 bottom-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white" onClick={e => e.stopPropagation()}>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="moviename" className="block text-sm font-medium text-gray-700">Title:</label>
+            <input
+              id="moviename"
+              type="text"
+              value={name}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="genre" className="block text-sm font-medium text-gray-700">Genre:</label>
+            <input
+              id="attribute2"
+              type="text"
+              value={genre}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setGenre(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="rating" className="block text-sm font-medium text-gray-700">Rating:</label>
+            <input
+              id="rating"
+              type="text"
+              value={rating}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setRating(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="url" className="block text-sm font-medium text-gray-700">Image URL:</label>
+            <input
+              id="url"
+              type="text"
+              value={imageURL}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setImageURL(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="runtime" className="block text-sm font-medium text-gray-700">Runtime:</label>
+            <input
+              id="runtime"
+              type="text"
+              value={runtime}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setRuntime(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="review" className="block text-sm font-medium text-gray-700">Review:</label>
+            <input
+              id="review"
+              type="text"
+              value={review}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setReview(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="director" className="block text-sm font-medium text-gray-700">Director:</label>
+            <input
+              id="director"
+              type="text"
+              value={director}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setDirector(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="producer" className="block text-sm font-medium text-gray-700">Producer:</label>
+            <input
+              id="producer"
+              type="text"
+              value={producer}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setProducer(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="cast" className="block text-sm font-medium text-gray-700">Cast:</label>
+            <input
+              id="cast"
+              type="text"
+              value={cast}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setCast(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category:</label>
+            <input
+              id="category"
+              type="text"
+              value={category}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setCategory(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="embedID" className="block text-sm font-medium text-gray-700">Embed ID:</label>
+            <input
+              id="embedID"
+              type="text"
+              value={embedID}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setEmbedID(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="synopsis" className="block text-sm font-medium text-gray-700">Synopsis:</label>
+            <textarea
+              id="synopsis"
+              value={synopsis}
+              rows="4"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setSynopsis(e.target.value)}
+            ></textarea>
+          </div>
+          <div className="flex flex-row mt-10 space-x-4 justify-center">
+                <button 
+                  className="px-20 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
+                >
+                Add Movie
+                </button>
+            </div>
+        </form>
+      </div>
+    </div>
+    );
 }
+
+export default AddMovie
